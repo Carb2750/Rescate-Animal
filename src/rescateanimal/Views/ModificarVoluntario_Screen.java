@@ -78,6 +78,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         };
         
         comboBoxEstado.setModel(new DefaultComboBoxModel<String>(this.estados));
+        this.comboBoxEstado.setSelectedIndex(VoluntarioCache.getVoluntario().getEstado() - 1);
     }
 
     private void group() {
@@ -234,7 +235,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         rbNocturno.setText("Nocturno");
         rbNocturno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbNocturnoActionPerformed(evt);
+                rbDiurnoActionPerformed(evt);
             }
         });
 
@@ -458,11 +459,6 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.group();
     }//GEN-LAST:event_rbDiurnoActionPerformed
-
-    private void rbNocturnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbNocturnoActionPerformed
-        // TODO add your handling code here:
-        this.group();
-    }//GEN-LAST:event_rbNocturnoActionPerformed
 
     /**
      * @param args the command line arguments

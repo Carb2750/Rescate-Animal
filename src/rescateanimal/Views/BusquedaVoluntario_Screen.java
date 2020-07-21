@@ -60,7 +60,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         } else {
             this.txtBuscarFiltro.setText("");
             this.idEstado = "2";
-           this.getVoluntarios(this.idEstado);
+            this.getVoluntarios(this.idEstado);
         }
 
         this.selected = selected;
@@ -108,7 +108,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         comboBoxFiltro = new javax.swing.JComboBox<>();
         txtBuscarFiltro = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
         btnVerTodo = new javax.swing.JButton();
         rbActivo = new javax.swing.JRadioButton();
         jLabel1 = new javax.swing.JLabel();
@@ -128,7 +128,15 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
             new String [] {
                 "Id", "Identidad", "Nombre", "Apellido", "Fecha", "Teléfono", "Correo", "Fecha Inicio", "Fecha Final", "Turno"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tableVoluntarios.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableVoluntariosMouseClicked(evt);
@@ -175,10 +183,10 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Modificar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnModificarActionPerformed(evt);
             }
         });
 
@@ -230,7 +238,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnVerTodo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
+                        .addComponent(btnModificar)
                         .addGap(39, 39, 39))))
         );
         jPanel3Layout.setVerticalGroup(
@@ -241,7 +249,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
                     .addComponent(comboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtBuscarFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar)
-                    .addComponent(jButton2)
+                    .addComponent(btnModificar)
                     .addComponent(btnVerTodo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -328,41 +336,37 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
-//        System.out.println("Filtro: " + this.nombresColumnas[this.comboBoxFiltro.getSelectedIndex()]);
-//        System.out.println("Condicion: " + this.txtBuscarFiltro.getText());
-        ArrayList<Voluntario> voluntarios = this.con.getFiltroVoluntario(this.nombresColumnas[this.comboBoxFiltro.getSelectedIndex()], this.txtBuscarFiltro.getText());
-//        System.out.println("Voluntario: " + voluntarios.getId());
-        this.tableModel.setRowCount(0);
-        tableModel = (DefaultTableModel) tableVoluntarios.getModel();
-        this.voluntarios = this.con.getVoluntarios("1");
-        for (int i = 0; i < voluntarios.size(); i++) {
-            tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), voluntarios.get(i).getId(), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), voluntarios.get(i).getId()});
+        if (!this.txtBuscarFiltro.getText().isEmpty()) {
+            ArrayList<Voluntario> voluntarios = this.con.getFiltroVoluntario(this.nombresColumnas[this.comboBoxFiltro.getSelectedIndex()], this.txtBuscarFiltro.getText());
+            this.tableModel.setRowCount(0);
+            tableModel = (DefaultTableModel) tableVoluntarios.getModel();
+            this.voluntarios = this.con.getVoluntarios("1");
+            for (int i = 0; i < voluntarios.size(); i++) {
+                tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), voluntarios.get(i).getId(), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), voluntarios.get(i).getId()});
+            }
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void tableVoluntariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableVoluntariosMouseClicked
         // TODO add your handling code here:
-        System.out.println(this.tableVoluntarios.getValueAt(this.tableVoluntarios.getSelectedRow(), 0));
-//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.selectedRow = this.tableVoluntarios.getSelectedRow();
         LocalDate fechaNacimiento = LocalDate.parse(this.tableVoluntarios.getValueAt(selectedRow, 4).toString());
         LocalDate fechaInicio = LocalDate.parse(this.tableVoluntarios.getValueAt(selectedRow, 7).toString());
         LocalDate fechaFinal = LocalDate.parse(this.tableVoluntarios.getValueAt(selectedRow, 8).toString());
-//        System.out.println(LocalDate.parse(this.tableVoluntarios.getValueAt(this.tableVoluntarios.getSelectedRow(), 7).toString()));
         System.out.println("String: " + Voluntario.getIdTurno(tableVoluntarios.getValueAt(selectedRow, 9).toString()));
         int idTurno = Voluntario.getIdTurno(tableVoluntarios.getValueAt(selectedRow, 9).toString());
-        Voluntario voluntario = new Voluntario(tableVoluntarios.getValueAt(selectedRow, 0).toString(), tableVoluntarios.getValueAt(selectedRow, 1).toString(), tableVoluntarios.getValueAt(selectedRow, 2).toString(), tableVoluntarios.getValueAt(selectedRow, 3).toString(), fechaNacimiento, tableVoluntarios.getValueAt(selectedRow, 5).toString(), tableVoluntarios.getValueAt(selectedRow, 6).toString(), fechaInicio, fechaFinal, idTurno, 1);
+        Voluntario voluntario = new Voluntario(tableVoluntarios.getValueAt(selectedRow, 0).toString(), tableVoluntarios.getValueAt(selectedRow, 1).toString(), tableVoluntarios.getValueAt(selectedRow, 2).toString(), tableVoluntarios.getValueAt(selectedRow, 3).toString(), fechaNacimiento, tableVoluntarios.getValueAt(selectedRow, 5).toString(), tableVoluntarios.getValueAt(selectedRow, 6).toString(), fechaInicio, fechaFinal, idTurno, Integer.parseInt(this.idEstado));
         VoluntarioCache.setVoluntario(voluntario);
     }//GEN-LAST:event_tableVoluntariosMouseClicked
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
         if (this.selectedRow != -1) {
             ModificarVoluntario_Screen modificarVoluntarioScreen = new ModificarVoluntario_Screen();
             modificarVoluntarioScreen.setVisible(true);
             this.setVisible(false);
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnVerTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerTodoActionPerformed
         // TODO add your handling code here:
@@ -418,10 +422,10 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.ButtonGroup btnGroupEstado;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnVerTodo;
     private javax.swing.JComboBox<String> comboBoxFiltro;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel7;
