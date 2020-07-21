@@ -5,6 +5,10 @@
  */
 package rescateanimal.Views;
 
+import java.util.ArrayList;
+import rescateanimal.Controllers.Conexion;
+import rescateanimal.Models.Voluntario;
+
 /**
  *
  * @author chris
@@ -14,6 +18,7 @@ public class VoluntarioMenu_Screen extends javax.swing.JFrame {
     /**
      * Creates new form VoluntarioMenu_Screen
      */
+    
     public VoluntarioMenu_Screen() {
         initComponents();
     }
