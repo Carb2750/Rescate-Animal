@@ -32,6 +32,7 @@ public class Conexion {
     private static Statement stm;
     private static ResultSet rss;
     private static PreparedStatement pStatement;
+    private static CallableStatement callableStatement;
 
     private static final String driver = "com.mysql.jdbc.Driver";
     private static final String user = "root";
@@ -56,25 +57,26 @@ public class Conexion {
     public void addVoluntario(Voluntario voluntario) {
         try {
             this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
-            this.pStatement = this.con.prepareStatement("INSERT INTO voluntarios(identidad_voluntario, nombre_voluntario, apellido_voluntario, fecha_nacimiento, num_tel, correo_electronico, fecha_inicio, fecha_final, id_tipo_turno, id_estado) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            this.pStatement.setString(1, voluntario.getId());
-            this.pStatement.setString(2, voluntario.getNombre());
-            this.pStatement.setString(3, voluntario.getApellido());
-            this.pStatement.setDate(4, Date.valueOf(voluntario.getFechaNacimiento()));
-            this.pStatement.setString(5, voluntario.getNumTelefono());
-            this.pStatement.setString(6, voluntario.getCorreo());
-            this.pStatement.setDate(7, Date.valueOf(voluntario.getFechaInicio()));
-            this.pStatement.setDate(8, Date.valueOf(voluntario.getFechaFinal()));
-            this.pStatement.setInt(9, voluntario.getTurno());
-            this.pStatement.setInt(10, voluntario.getEstado());
-            this.pStatement.executeUpdate();
+            this.callableStatement = this.con.prepareCall("{call proc_agregarVoluntario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+            
+            this.callableStatement.setString(1, voluntario.getId());
+            this.callableStatement.setString(2, voluntario.getNombre());
+            this.callableStatement.setString(3, voluntario.getApellido());
+            this.callableStatement.setDate(4, Date.valueOf(voluntario.getFechaNacimiento()));
+            this.callableStatement.setString(5, voluntario.getNumTelefono());
+            this.callableStatement.setString(6, voluntario.getCorreo());
+            this.callableStatement.setDate(7, Date.valueOf(voluntario.getFechaInicio()));
+            this.callableStatement.setDate(8, Date.valueOf(voluntario.getFechaFinal()));
+            this.callableStatement.setInt(9, voluntario.getTurno());
+            this.callableStatement.setInt(10, voluntario.getEstado());
+            this.callableStatement.execute();
 
         } catch (SQLException e) {
             System.err.println(e);
         }
     }
 
-    public ArrayList<Voluntario> getVoluntarios() {
+    public ArrayList<Voluntario> getVoluntarios(String idEstado) {
         String estado = "";
 
         ArrayList<Voluntario> voluntarios = new ArrayList<>();
@@ -82,7 +84,7 @@ public class Conexion {
         try {
             this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
             this.stm = con.createStatement();
-            this.rss = stm.executeQuery("SELECT * FROM voluntarios where id_estado = 1");
+            this.rss = stm.executeQuery("SELECT * FROM voluntarios where id_estado = " + idEstado);
             while (rss.next()) {
                 String ID_UNICO = rss.getString("id_voluntario");
                 String ID = rss.getString("identidad_voluntario");
@@ -141,17 +143,19 @@ public class Conexion {
     public void updateVoluntario(Voluntario voluntario) {
         try {
             this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
-            this.pStatement = this.con.prepareStatement("UPDATE voluntarios SET nombre_voluntario = ? , apellido_voluntario = ? , fecha_nacimiento = ? , num_tel = ? , correo_electronico = ? , fecha_inicio = ? , fecha_final = ?, id_tipo_turno = ?, id_estado = ? WHERE id_voluntario = " + voluntario.getIdUnico());
-            this.pStatement.setString(1, voluntario.getNombre());
-            this.pStatement.setString(2, voluntario.getApellido());
-            this.pStatement.setDate(3, Date.valueOf(voluntario.getFechaNacimiento()));
-            this.pStatement.setString(4, voluntario.getNumTelefono());
-            this.pStatement.setString(5, voluntario.getCorreo());
-            this.pStatement.setDate(6, Date.valueOf(voluntario.getFechaInicio()));
-            this.pStatement.setDate(7, Date.valueOf(voluntario.getFechaFinal()));
-            this.pStatement.setInt(8, voluntario.getTurno());
-            this.pStatement.setInt(9, voluntario.getEstado());
-            this.pStatement.executeUpdate();
+            this.callableStatement = this.con.prepareCall("{call proc_actualizarVoluntario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+
+            this.callableStatement.setString(1, voluntario.getNombre());
+            this.callableStatement.setString(2, voluntario.getApellido());
+            this.callableStatement.setDate(3, Date.valueOf(voluntario.getFechaNacimiento()));
+            this.callableStatement.setString(4, voluntario.getNumTelefono());
+            this.callableStatement.setString(5, voluntario.getCorreo());
+            this.callableStatement.setDate(6, Date.valueOf(voluntario.getFechaInicio()));
+            this.callableStatement.setDate(7, Date.valueOf(voluntario.getFechaFinal()));
+            this.callableStatement.setInt(8, voluntario.getTurno());
+            this.callableStatement.setInt(9, voluntario.getEstado());
+            this.callableStatement.setInt(10, Integer.parseInt(voluntario.getIdUnico()));
+            this.callableStatement.execute();
 
         } catch (SQLException e) {
             System.err.println(e);
