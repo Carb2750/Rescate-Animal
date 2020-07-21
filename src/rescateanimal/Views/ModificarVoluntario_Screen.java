@@ -8,6 +8,7 @@ package rescateanimal.Views;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.time.format.DateTimeFormatter;
+import javax.swing.DefaultComboBoxModel;
 import rescateanimal.Controllers.Conexion;
 import rescateanimal.Models.Voluntario;
 import rescateanimal.Utils.Cache.VoluntarioCache;
@@ -28,6 +29,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
     DatePicker datePicker3;
     int turno;
     String selected;
+    private String estados[];
 
     public ModificarVoluntario_Screen() {
         initComponents();
@@ -60,6 +62,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         this.datePicker2.setDate(VoluntarioCache.getVoluntario().getFechaInicio());
         this.datePicker3.setDate(VoluntarioCache.getVoluntario().getFechaFinal());
 
+        this.turno = VoluntarioCache.getVoluntario().getTurno();
         rbDiurno.setActionCommand("diurno");
         rbNocturno.setActionCommand("nocturno");
         
@@ -69,6 +72,12 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         else {
             rbNocturno.setSelected(true);
         }
+        
+        this.estados = new String[] {
+          "Activo", "Inactivo"  
+        };
+        
+        comboBoxEstado.setModel(new DefaultComboBoxModel<String>(this.estados));
     }
 
     private void group() {
@@ -123,9 +132,10 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
+        comboBoxEstado = new javax.swing.JComboBox<>();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1036, 550));
         setMinimumSize(new java.awt.Dimension(1036, 550));
         setResizable(false);
 
@@ -278,6 +288,12 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
             }
         });
 
+        comboBoxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel13.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel13.setText("Estado");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -300,11 +316,13 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jLabel6)
-                                        .addComponent(jLabel5))
+                                        .addComponent(jLabel5)
+                                        .addComponent(jLabel13))
                                     .addGap(12, 12, 12)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(txtCorreo)
-                                        .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(79, 79, 79)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -331,7 +349,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -379,7 +397,11 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                         .addComponent(txtFechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
                     .addComponent(btnCancelar))
@@ -424,7 +446,8 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        Voluntario voluntario = new Voluntario(VoluntarioCache.getVoluntario().getIdUnico(), VoluntarioCache.getVoluntario().getId(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno);
+        System.out.println("Cache: " + VoluntarioCache.getVoluntario().getTurno());
+        Voluntario voluntario = new Voluntario(VoluntarioCache.getVoluntario().getIdUnico(), VoluntarioCache.getVoluntario().getId(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, comboBoxEstado.getSelectedIndex() + 1);
         this.con.updateVoluntario(voluntario);
         BusquedaVoluntario_Screen busquedaVoluntarioScreen = new BusquedaVoluntario_Screen();
         busquedaVoluntarioScreen.setVisible(true);
@@ -482,10 +505,12 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
     private javax.swing.ButtonGroup btnGroupTurno;
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JComboBox<String> comboBoxEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

@@ -6,6 +6,8 @@
 package rescateanimal.Models;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -23,8 +25,9 @@ public class Voluntario {
     private LocalDate fechaFinal;
     private String correo;
     private int turno;
+    private int estado;
 
-    public Voluntario(String idUnico, String id, String nombre, String apellido, LocalDate fechaNacimiento, String numTelefono, String correo, LocalDate fechaInicio, LocalDate fechaFinal, int turno) {
+    public Voluntario(String idUnico, String id, String nombre, String apellido, LocalDate fechaNacimiento, String numTelefono, String correo, LocalDate fechaInicio, LocalDate fechaFinal, int turno, int estado) {
         this.idUnico = idUnico;
         this.id = id;
         this.nombre = nombre;
@@ -35,6 +38,21 @@ public class Voluntario {
         this.fechaFinal = fechaFinal;
         this.correo = correo;
         this.turno = turno;
+        this.estado = estado;
+    }
+
+    public static String getNamedTurno(int idTurno) {
+        if(idTurno == 1) {
+            return "Diurno";
+        }
+        return "Nocturno";
+    }
+    
+    public static Integer getIdTurno(String turno) {
+        if(turno.equalsIgnoreCase("Diurno")) {
+            return 1;
+        }
+        return 2;
     }
 
     public String getIdUnico() {
@@ -115,6 +133,14 @@ public class Voluntario {
 
     public void setTurno(int turno) {
         this.turno = turno;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
 }
