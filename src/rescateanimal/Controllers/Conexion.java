@@ -24,6 +24,7 @@ import rescateanimal.Models.Voluntario;
 /**
  *
  * @author chris
+ * git 
  */
 public class Conexion {
 
@@ -55,7 +56,7 @@ public class Conexion {
     public void addVoluntario(Voluntario voluntario) {
         try {
             this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
-            this.pStatement = this.con.prepareStatement("INSERT INTO voluntarios(identidad_voluntario, nombre_voluntario, apellido_voluntario, fecha_nacimiento, num_tel, correo_electronico, fecha_inicio, fecha_final, id_tipo_turno) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            this.pStatement = this.con.prepareStatement("INSERT INTO voluntarios(identidad_voluntario, nombre_voluntario, apellido_voluntario, fecha_nacimiento, num_tel, correo_electronico, fecha_inicio, fecha_final, id_tipo_turno, id_estado) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             this.pStatement.setString(1, voluntario.getId());
             this.pStatement.setString(2, voluntario.getNombre());
             this.pStatement.setString(3, voluntario.getApellido());
@@ -65,6 +66,7 @@ public class Conexion {
             this.pStatement.setDate(7, Date.valueOf(voluntario.getFechaInicio()));
             this.pStatement.setDate(8, Date.valueOf(voluntario.getFechaFinal()));
             this.pStatement.setInt(9, voluntario.getTurno());
+            this.pStatement.setInt(10, voluntario.getEstado());
             this.pStatement.executeUpdate();
 
         } catch (SQLException e) {
@@ -80,7 +82,7 @@ public class Conexion {
         try {
             this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
             this.stm = con.createStatement();
-            this.rss = stm.executeQuery("SELECT * FROM voluntarios");
+            this.rss = stm.executeQuery("SELECT * FROM voluntarios where id_estado = 1");
             while (rss.next()) {
                 String ID_UNICO = rss.getString("id_voluntario");
                 String ID = rss.getString("identidad_voluntario");
@@ -92,8 +94,9 @@ public class Conexion {
                 String FECHA_FINAL = rss.getString("fecha_final");
                 String CORREO = rss.getString("correo_electronico");
                 String ID_TURNO = rss.getString("id_tipo_turno");
+                Integer ESTADO = rss.getInt("id_estado");
 
-                voluntarios.add(new Voluntario(ID_UNICO, ID, NOMBRE, APELLIDO, LocalDate.parse(FECHA_NACIMIENTO), NUMERO_TELEFONO, CORREO, LocalDate.parse(FECHA_INICIO), LocalDate.parse(FECHA_FINAL), Integer.parseInt(ID_TURNO)));
+                voluntarios.add(new Voluntario(ID_UNICO, ID, NOMBRE, APELLIDO, LocalDate.parse(FECHA_NACIMIENTO), NUMERO_TELEFONO, CORREO, LocalDate.parse(FECHA_INICIO), LocalDate.parse(FECHA_FINAL), Integer.parseInt(ID_TURNO), ESTADO));
                 estado = "Correcto";
             }
         } catch (SQLException e) {
@@ -123,8 +126,9 @@ public class Conexion {
                 String FECHA_FINAL = rss.getString("fecha_final");
                 String CORREO = rss.getString("correo_electronico");
                 String ID_TURNO = rss.getString("id_tipo_turno");
+                Integer ESTADO = rss.getInt("id_estado");
 
-                voluntarios.add(new Voluntario(ID_UNICO, ID, NOMBRE, APELLIDO, LocalDate.parse(FECHA_NACIMIENTO), NUMERO_TELEFONO, CORREO, LocalDate.parse(FECHA_INICIO), LocalDate.parse(FECHA_FINAL), Integer.parseInt(ID_TURNO)));
+                voluntarios.add(new Voluntario(ID_UNICO, ID, NOMBRE, APELLIDO, LocalDate.parse(FECHA_NACIMIENTO), NUMERO_TELEFONO, CORREO, LocalDate.parse(FECHA_INICIO), LocalDate.parse(FECHA_FINAL), Integer.parseInt(ID_TURNO), ESTADO));
                 estado = "Correcto";
             }
         } catch (SQLException e) {
@@ -137,7 +141,7 @@ public class Conexion {
     public void updateVoluntario(Voluntario voluntario) {
         try {
             this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
-            this.pStatement = this.con.prepareStatement("UPDATE voluntarios SET nombre_voluntario = ? , apellido_voluntario = ? , fecha_nacimiento = ? , num_tel = ? , correo_electronico = ? , fecha_inicio = ? , fecha_final = ?, id_tipo_turno = ? WHERE id_voluntario = " + voluntario.getIdUnico());
+            this.pStatement = this.con.prepareStatement("UPDATE voluntarios SET nombre_voluntario = ? , apellido_voluntario = ? , fecha_nacimiento = ? , num_tel = ? , correo_electronico = ? , fecha_inicio = ? , fecha_final = ?, id_tipo_turno = ?, id_estado = ? WHERE id_voluntario = " + voluntario.getIdUnico());
             this.pStatement.setString(1, voluntario.getNombre());
             this.pStatement.setString(2, voluntario.getApellido());
             this.pStatement.setDate(3, Date.valueOf(voluntario.getFechaNacimiento()));
@@ -146,6 +150,7 @@ public class Conexion {
             this.pStatement.setDate(6, Date.valueOf(voluntario.getFechaInicio()));
             this.pStatement.setDate(7, Date.valueOf(voluntario.getFechaFinal()));
             this.pStatement.setInt(8, voluntario.getTurno());
+            this.pStatement.setInt(9, voluntario.getEstado());
             this.pStatement.executeUpdate();
 
         } catch (SQLException e) {

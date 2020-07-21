@@ -20,7 +20,6 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
     /**
      * Creates new form NuevoVoluntario_Screen
      */
-    
     Conexion con = new Conexion();
     DatePicker datePicker;
     DatePicker datePicker2;
@@ -30,7 +29,7 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
 
     public NuevoVoluntario_Screen() {
         initComponents();
-        
+
         this.con.conector();
 
 //        jPanel2.setVisible(false);
@@ -390,11 +389,14 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
         // TODO add your handling code here:
 //        LocalDate tiempo = this.datePicker.getDate();
 //        System.out.println(tiempo);
-        Voluntario voluntario = new Voluntario("", this.txtIndentidad.getText(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno);
-        this.con.addVoluntario(voluntario);
-        VoluntarioMenu_Screen voluntarioMenuScreen = new VoluntarioMenu_Screen();
-        voluntarioMenuScreen.setVisible(true);
-        this.setVisible(false);
+        System.out.println("BD: " + this.con.getFiltroVoluntario("id_voluntario", this.txtIndentidad.getText()).isEmpty());
+        if (this.con.getFiltroVoluntario("id_voluntario", this.txtIndentidad.getText()).isEmpty()) {
+            Voluntario voluntario = new Voluntario("", this.txtIndentidad.getText(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, 1);
+            this.con.addVoluntario(voluntario);
+            VoluntarioMenu_Screen voluntarioMenuScreen = new VoluntarioMenu_Screen();
+            voluntarioMenuScreen.setVisible(true);
+            this.setVisible(false);
+        }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

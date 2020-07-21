@@ -46,7 +46,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         tableModel = (DefaultTableModel) tableVoluntarios.getModel();
         this.voluntarios = this.con.getVoluntarios();
         for (int i = 0; i < this.voluntarios.size(); i++) {
-            tableModel.addRow(new Object[]{this.voluntarios.get(i).getIdUnico(), this.voluntarios.get(i).getId(), this.voluntarios.get(i).getNombre(), this.voluntarios.get(i).getApellido(), this.voluntarios.get(i).getFechaNacimiento(), this.voluntarios.get(i).getNumTelefono(), this.voluntarios.get(i).getCorreo(), this.voluntarios.get(i).getFechaInicio(), this.voluntarios.get(i).getFechaFinal(), this.voluntarios.get(i).getTurno()});
+            tableModel.addRow(new Object[]{this.voluntarios.get(i).getIdUnico(), this.voluntarios.get(i).getId(), this.voluntarios.get(i).getNombre(), this.voluntarios.get(i).getApellido(), this.voluntarios.get(i).getFechaNacimiento(), this.voluntarios.get(i).getNumTelefono(), this.voluntarios.get(i).getCorreo(), this.voluntarios.get(i).getFechaInicio(), this.voluntarios.get(i).getFechaFinal(), this.voluntarios.get(i).getNamedTurno(this.voluntarios.get(i).getTurno())});
         }
     }
 
@@ -277,7 +277,9 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         LocalDate fechaInicio = LocalDate.parse(this.tableVoluntarios.getValueAt(selectedRow, 7).toString());
         LocalDate fechaFinal = LocalDate.parse(this.tableVoluntarios.getValueAt(selectedRow, 8).toString());
 //        System.out.println(LocalDate.parse(this.tableVoluntarios.getValueAt(this.tableVoluntarios.getSelectedRow(), 7).toString()));
-        Voluntario voluntario = new Voluntario(tableVoluntarios.getValueAt(selectedRow, 0).toString(), tableVoluntarios.getValueAt(selectedRow, 1).toString(), tableVoluntarios.getValueAt(selectedRow, 2).toString(), tableVoluntarios.getValueAt(selectedRow, 3).toString(), fechaNacimiento, tableVoluntarios.getValueAt(selectedRow, 5).toString(), tableVoluntarios.getValueAt(selectedRow, 6).toString(), fechaInicio, fechaFinal, Integer.parseInt(tableVoluntarios.getValueAt(selectedRow, 9).toString()));
+        System.out.println("String: " + Voluntario.getIdTurno(tableVoluntarios.getValueAt(selectedRow, 9).toString()));
+        int idTurno = Voluntario.getIdTurno(tableVoluntarios.getValueAt(selectedRow, 9).toString());
+        Voluntario voluntario = new Voluntario(tableVoluntarios.getValueAt(selectedRow, 0).toString(), tableVoluntarios.getValueAt(selectedRow, 1).toString(), tableVoluntarios.getValueAt(selectedRow, 2).toString(), tableVoluntarios.getValueAt(selectedRow, 3).toString(), fechaNacimiento, tableVoluntarios.getValueAt(selectedRow, 5).toString(), tableVoluntarios.getValueAt(selectedRow, 6).toString(), fechaInicio, fechaFinal, idTurno, 1);
         VoluntarioCache.setVoluntario(voluntario);
     }//GEN-LAST:event_tableVoluntariosMouseClicked
 
