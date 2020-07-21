@@ -5,6 +5,17 @@
  */
 package rescateanimal.Views;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import rescateanimal.Controllers.Conexion;
+import rescateanimal.Models.Voluntario;
+import rescateanimal.Utils.Cache.VoluntarioCache;
+
 /**
  *
  * @author chris
@@ -14,8 +25,39 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
     /**
      * Creates new form BusquedaVoluntario_Screen
      */
+    DefaultTableModel tableModel;
+    Conexion con;
+    ArrayList<Voluntario> voluntarios;
+    String[] nombresColumnas;
+    int selectedRow;
+
     public BusquedaVoluntario_Screen() {
         initComponents();
+
+        this.nombresColumnas = new String[]{"identidad_voluntario", "nombre_voluntario", "apellido_voluntario", "fecha_nacimiento", "num_tel", "fecha_inicio", "fecha_final", "correo_electronico", "id_tipo_turno"};
+        this.selectedRow = -1;
+        
+        this.con = new Conexion();
+        this.getVoluntarios();
+        this.fillComboBox();
+   }
+
+    private void getVoluntarios() {
+        tableModel = (DefaultTableModel) tableVoluntarios.getModel();
+        this.voluntarios = this.con.getVoluntarios();
+        for (int i = 0; i < this.voluntarios.size(); i++) {
+            tableModel.addRow(new Object[]{this.voluntarios.get(i).getIdUnico(), this.voluntarios.get(i).getId(), this.voluntarios.get(i).getNombre(), this.voluntarios.get(i).getApellido(), this.voluntarios.get(i).getFechaNacimiento(), this.voluntarios.get(i).getNumTelefono(), this.voluntarios.get(i).getCorreo(), this.voluntarios.get(i).getFechaInicio(), this.voluntarios.get(i).getFechaFinal(), this.voluntarios.get(i).getTurno()});
+        }
+    }
+
+    private void fillComboBox() {
+        DefaultComboBoxModel comboModel = new DefaultComboBoxModel();
+
+        for (int i = 0; i < this.tableModel.getColumnCount(); i++) {
+            comboModel.addElement(this.tableModel.getColumnName(i));
+        }
+
+        this.comboBoxFiltro.setModel(comboModel);
     }
 
     /**
@@ -29,7 +71,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableVoluntarios = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -38,27 +80,34 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         lbTitle = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         comboBoxFiltro = new javax.swing.JComboBox<>();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txtBuscarFiltro = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1036, 550));
         setMinimumSize(new java.awt.Dimension(1036, 550));
-        setPreferredSize(new java.awt.Dimension(1036, 550));
 
         jPanel1.setBackground(new java.awt.Color(241, 242, 240));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableVoluntarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Nombre", "Apellido", "Fecha", "Teléfono", "Correo", "Fecha Inicio", "Fecha Final", "Turno"
+                "Id", "Identidad", "Nombre", "Apellido", "Fecha", "Teléfono", "Correo", "Fecha Inicio", "Fecha Final", "Turno"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tableVoluntarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableVoluntariosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tableVoluntarios);
+        if (tableVoluntarios.getColumnModel().getColumnCount() > 0) {
+            tableVoluntarios.getColumnModel().getColumn(1).setPreferredWidth(120);
+        }
 
         jPanel2.setBackground(new java.awt.Color(33, 67, 122));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -89,9 +138,19 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
 
         comboBoxFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton1.setText("Buscar");
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Modificar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -101,9 +160,9 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addComponent(comboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(txtBuscarFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBuscar)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
                 .addGap(39, 39, 39))
@@ -114,8 +173,8 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
+                    .addComponent(txtBuscarFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar)
                     .addComponent(jButton2))
                 .addGap(433, 433, 433))
         );
@@ -144,14 +203,14 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(46, 46, 46)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 725, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(57, 57, 57))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lbTitle)
                         .addGap(115, 115, 115))))
         );
@@ -195,6 +254,42 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnRegresarActionPerformed
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        // TODO add your handling code here:
+//        System.out.println("Filtro: " + this.nombresColumnas[this.comboBoxFiltro.getSelectedIndex()]);
+//        System.out.println("Condicion: " + this.txtBuscarFiltro.getText());
+        ArrayList<Voluntario> voluntarios = this.con.getFiltroVoluntario(this.nombresColumnas[this.comboBoxFiltro.getSelectedIndex()], this.txtBuscarFiltro.getText());
+//        System.out.println("Voluntario: " + voluntarios.getId());
+        this.tableModel.setRowCount(0);
+        tableModel = (DefaultTableModel) tableVoluntarios.getModel();
+        this.voluntarios = this.con.getVoluntarios();
+        for (int i = 0; i < voluntarios.size(); i++) {
+            tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), voluntarios.get(i).getId(), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), voluntarios.get(i).getId()});
+        }
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void tableVoluntariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableVoluntariosMouseClicked
+        // TODO add your handling code here:
+        System.out.println(this.tableVoluntarios.getValueAt(this.tableVoluntarios.getSelectedRow(), 0));
+//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.selectedRow = this.tableVoluntarios.getSelectedRow();
+        LocalDate fechaNacimiento = LocalDate.parse(this.tableVoluntarios.getValueAt(selectedRow, 4).toString());
+        LocalDate fechaInicio = LocalDate.parse(this.tableVoluntarios.getValueAt(selectedRow, 7).toString());
+        LocalDate fechaFinal = LocalDate.parse(this.tableVoluntarios.getValueAt(selectedRow, 8).toString());
+//        System.out.println(LocalDate.parse(this.tableVoluntarios.getValueAt(this.tableVoluntarios.getSelectedRow(), 7).toString()));
+        Voluntario voluntario = new Voluntario(tableVoluntarios.getValueAt(selectedRow, 0).toString(), tableVoluntarios.getValueAt(selectedRow, 1).toString(), tableVoluntarios.getValueAt(selectedRow, 2).toString(), tableVoluntarios.getValueAt(selectedRow, 3).toString(), fechaNacimiento, tableVoluntarios.getValueAt(selectedRow, 5).toString(), tableVoluntarios.getValueAt(selectedRow, 6).toString(), fechaInicio, fechaFinal, Integer.parseInt(tableVoluntarios.getValueAt(selectedRow, 9).toString()));
+        VoluntarioCache.setVoluntario(voluntario);
+    }//GEN-LAST:event_tableVoluntariosMouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        if(this.selectedRow != -1) {
+            ModificarVoluntario_Screen modificarVoluntarioScreen = new ModificarVoluntario_Screen();
+            modificarVoluntarioScreen.setVisible(true);
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -231,9 +326,9 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> comboBoxFiltro;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel7;
@@ -243,8 +338,8 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbTitle;
+    private javax.swing.JTable tableVoluntarios;
+    private javax.swing.JTextField txtBuscarFiltro;
     // End of variables declaration//GEN-END:variables
 }
