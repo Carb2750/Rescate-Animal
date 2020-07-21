@@ -35,7 +35,7 @@ public class Conexion {
 
     private static final String driver = "com.mysql.jdbc.Driver";
     private static final String user = "root";
-    private static final String pass = "admin2750";
+    private static final String pass = "";
     private static final String url = "jdbc:mysql://localhost:3306/refugio";
 
     public String conector() {
@@ -74,7 +74,7 @@ public class Conexion {
         }
     }
 
-    public ArrayList<Voluntario> getVoluntarios() {
+    public ArrayList<Voluntario> getVoluntarios(String idEstado) {
         String estado = "";
 
         ArrayList<Voluntario> voluntarios = new ArrayList<>();
@@ -82,7 +82,7 @@ public class Conexion {
         try {
             this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
             this.stm = con.createStatement();
-            this.rss = stm.executeQuery("SELECT * FROM voluntarios where id_estado = 1");
+            this.rss = stm.executeQuery("SELECT * FROM voluntarios where id_estado = " + idEstado);
             while (rss.next()) {
                 String ID_UNICO = rss.getString("id_voluntario");
                 String ID = rss.getString("identidad_voluntario");
