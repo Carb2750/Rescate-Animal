@@ -46,7 +46,6 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1036, 550));
         setMinimumSize(new java.awt.Dimension(1036, 550));
-        setPreferredSize(new java.awt.Dimension(1036, 550));
 
         jPanel1.setBackground(new java.awt.Color(241, 242, 240));
 

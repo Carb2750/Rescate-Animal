@@ -5,6 +5,10 @@
  */
 package rescateanimal;
 
+import rescateanimal.Views.Login.Inicio_Sesion;
+import rescateanimal.Views.Login.Inicio_Sesion;
+import rescateanimal.Views.VoluntarioMenu_Screen;
+
 /**
  *
  * @author chris
@@ -16,6 +20,10 @@ public class RescateAnimal {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+         Inicio_Sesion in=new Inicio_Sesion();
+       in.setVisible(true);
+       //VoluntarioMenu_Screen vol=new VoluntarioMenu_Screen();
+      // vol.setVisible(true);
     }
     
 }
