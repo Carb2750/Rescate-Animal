@@ -7,6 +7,11 @@ package rescateanimal.Views;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import java.time.format.DateTimeFormatter;
+import javax.swing.DefaultComboBoxModel;
+import rescateanimal.Controllers.Conexion;
+import rescateanimal.Models.Voluntario;
+import rescateanimal.Utils.Cache.VoluntarioCache;
 
 /**
  *
@@ -17,23 +22,76 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
     /**
      * Creates new form ModificarVoluntario
      */
+    Conexion con = new Conexion();
+    Voluntario voluntario;
+    DatePicker datePicker;
+    DatePicker datePicker2;
+    DatePicker datePicker3;
+    int turno;
+    String selected;
+    private String estados[];
+
     public ModificarVoluntario_Screen() {
         initComponents();
 
+        this.con.conector();
+
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setAllowKeyboardEditing(false);
-        DatePicker datePicker = new DatePicker(dateSettings);
-        txtNacimiento.add(datePicker);
+        datePicker = new DatePicker(dateSettings);
+        txtFechaNacimiento.add(datePicker);
 
         DatePickerSettings dateSettings2 = new DatePickerSettings();
         dateSettings2.setAllowKeyboardEditing(false);
-        DatePicker datePicker2 = new DatePicker(dateSettings2);
+        datePicker2 = new DatePicker(dateSettings2);
         txtFechaInicio.add(datePicker2);
 
         DatePickerSettings dateSettings3 = new DatePickerSettings();
         dateSettings3.setAllowKeyboardEditing(false);
-        DatePicker datePicker3 = new DatePicker(dateSettings3);
+        datePicker3 = new DatePicker(dateSettings3);
         txtFechaFinal.add(datePicker3);
+
+        this.voluntario = VoluntarioCache.getVoluntario();
+
+        this.txtIdentidad.setText(this.voluntario.getId());;
+        this.txtNombre.setText(this.voluntario.getNombre());
+        this.txtApellido.setText(this.voluntario.getApellido());
+        this.txtCorreo.setText(this.voluntario.getCorreo());
+        this.txtTelefono.setText(this.voluntario.getNumTelefono());
+        this.datePicker.setDate(VoluntarioCache.getVoluntario().getFechaNacimiento());
+        this.datePicker2.setDate(VoluntarioCache.getVoluntario().getFechaInicio());
+        this.datePicker3.setDate(VoluntarioCache.getVoluntario().getFechaFinal());
+
+        this.turno = VoluntarioCache.getVoluntario().getTurno();
+        rbDiurno.setActionCommand("diurno");
+        rbNocturno.setActionCommand("nocturno");
+        
+        if(VoluntarioCache.getVoluntario().getTurno() == 1) {
+            rbDiurno.setSelected(true);
+        }
+        else {
+            rbNocturno.setSelected(true);
+        }
+        
+        this.estados = new String[] {
+          "Activo", "Inactivo"  
+        };
+        
+        comboBoxEstado.setModel(new DefaultComboBoxModel<String>(this.estados));
+        this.comboBoxEstado.setSelectedIndex(VoluntarioCache.getVoluntario().getEstado() - 1);
+    }
+
+    private void group() {
+        String selected = btnGroupTurno.getSelection().getActionCommand();
+
+        if (selected == "diurno") {
+            this.turno = 1;
+            System.out.println(selected);
+        } else {
+            this.turno = 2;
+        }
+
+        this.selected = selected;
     }
 
     /**
@@ -54,30 +112,31 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         lbTitle = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtApellido = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        txtNacimiento = new javax.swing.JPanel();
+        txtFechaNacimiento = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jFormattedTextField1 = new javax.swing.JFormattedTextField();
+        txtCorreo = new javax.swing.JTextField();
+        txtIdentidad = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtTelefono = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         txtFechaInicio = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         txtFechaFinal = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        rbDiurno = new javax.swing.JRadioButton();
+        rbNocturno = new javax.swing.JRadioButton();
+        btnGuardar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
+        comboBoxEstado = new javax.swing.JComboBox<>();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1036, 550));
         setMinimumSize(new java.awt.Dimension(1036, 550));
         setResizable(false);
 
@@ -124,29 +183,29 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setText("Fecha de Nacimiento");
 
-        txtNacimiento.setLayout(new javax.swing.BoxLayout(txtNacimiento, javax.swing.BoxLayout.LINE_AXIS));
+        txtFechaNacimiento.setLayout(new javax.swing.BoxLayout(txtFechaNacimiento, javax.swing.BoxLayout.LINE_AXIS));
 
         jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(51, 51, 51));
         jLabel6.setText("Correo Electrónico");
 
-        jFormattedTextField1.setEditable(false);
+        txtIdentidad.setEditable(false);
         try {
-            jFormattedTextField1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-####-#####")));
+            txtIdentidad.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####-####-#####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jFormattedTextField1.setMaximumSize(new java.awt.Dimension(0, 0));
-        jFormattedTextField1.setMinimumSize(new java.awt.Dimension(0, 0));
-        jFormattedTextField1.setPreferredSize(new java.awt.Dimension(0, 0));
+        txtIdentidad.setMaximumSize(new java.awt.Dimension(0, 0));
+        txtIdentidad.setMinimumSize(new java.awt.Dimension(0, 0));
+        txtIdentidad.setPreferredSize(new java.awt.Dimension(0, 0));
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
         jLabel3.setText("Telefono:");
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        txtTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                txtTelefonoActionPerformed(evt);
             }
         });
 
@@ -164,11 +223,21 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Turno"));
 
-        btnGroupTurno.add(jRadioButton1);
-        jRadioButton1.setText("Diurno");
+        btnGroupTurno.add(rbDiurno);
+        rbDiurno.setText("Diurno");
+        rbDiurno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbDiurnoActionPerformed(evt);
+            }
+        });
 
-        btnGroupTurno.add(jRadioButton2);
-        jRadioButton2.setText("Nocturno");
+        btnGroupTurno.add(rbNocturno);
+        rbNocturno.setText("Nocturno");
+        rbNocturno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbDiurnoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -176,9 +245,9 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addComponent(jRadioButton1)
+                .addComponent(rbDiurno)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
-                .addComponent(jRadioButton2)
+                .addComponent(rbNocturno)
                 .addGap(39, 39, 39))
         );
         jPanel3Layout.setVerticalGroup(
@@ -186,14 +255,24 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(rbDiurno)
+                    .addComponent(rbNocturno))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Guardar");
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Cancelar");
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnRegresar.setBackground(new java.awt.Color(241, 242, 240));
         btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rescateanimal/Images/chevron-back.png"))); // NOI18N
@@ -209,6 +288,12 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                 btnRegresarActionPerformed(evt);
             }
         });
+
+        comboBoxEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel13.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel13.setText("Estado");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -228,15 +313,17 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                                 .addGap(87, 87, 87)
                                 .addComponent(jLabel2))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jLabel6)
-                                        .addComponent(jLabel5))
+                                        .addComponent(jLabel5)
+                                        .addComponent(jLabel13))
                                     .addGap(12, 12, 12)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jTextField4)
-                                        .addComponent(txtNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(txtCorreo)
+                                        .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(79, 79, 79)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -244,8 +331,8 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                                     .addComponent(jLabel1))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(txtNombre)
+                                    .addComponent(txtIdentidad, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(120, 120, 120)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -253,17 +340,17 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                             .addComponent(jLabel11)
                             .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(btnGuardar)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton2)))))
+                                .addComponent(btnCancelar)))))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -278,29 +365,29 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                         .addGap(23, 23, 23)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
-                            .addComponent(jFormattedTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtIdentidad, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(32, 32, 32)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(31, 31, 31)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
-                            .addComponent(txtNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(30, 30, 30)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(22, 22, 22)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabel10)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -311,10 +398,14 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                         .addComponent(txtFechaFinal, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnCancelar))
                 .addGap(33, 33, 33))
         );
 
@@ -333,19 +424,41 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
         // TODO add your handling code here:
         BusquedaVoluntario_Screen busquedaVoluntarioScreen = new BusquedaVoluntario_Screen();
         busquedaVoluntarioScreen.setVisible(true);
         this.setVisible(false);
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_txtTelefonoActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
         // TODO add your handling code here:
-        VoluntarioMenu_Screen voluntarioMenuScreen = new VoluntarioMenu_Screen();
-        voluntarioMenuScreen.setVisible(true);
+        BusquedaVoluntario_Screen busquedaVoluntarioScreen = new BusquedaVoluntario_Screen();
+        busquedaVoluntarioScreen.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        BusquedaVoluntario_Screen busquedaVoluntarioScreen = new BusquedaVoluntario_Screen();
+        busquedaVoluntarioScreen.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        System.out.println("Cache: " + VoluntarioCache.getVoluntario().getTurno());
+        Voluntario voluntario = new Voluntario(VoluntarioCache.getVoluntario().getIdUnico(), VoluntarioCache.getVoluntario().getId(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, comboBoxEstado.getSelectedIndex() + 1);
+        this.con.updateVoluntario(voluntario);
+        BusquedaVoluntario_Screen busquedaVoluntarioScreen = new BusquedaVoluntario_Screen();
+        busquedaVoluntarioScreen.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void rbDiurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbDiurnoActionPerformed
+        // TODO add your handling code here:
+        this.group();
+    }//GEN-LAST:event_rbDiurnoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -384,15 +497,16 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCancelar;
     private javax.swing.ButtonGroup btnGroupTurno;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnRegresar;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JFormattedTextField jFormattedTextField1;
+    private javax.swing.JComboBox<String> comboBoxEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -404,15 +518,16 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JLabel lbTitle;
+    private javax.swing.JRadioButton rbDiurno;
+    private javax.swing.JRadioButton rbNocturno;
+    private javax.swing.JTextField txtApellido;
+    private javax.swing.JTextField txtCorreo;
     private javax.swing.JPanel txtFechaFinal;
     private javax.swing.JPanel txtFechaInicio;
-    private javax.swing.JPanel txtNacimiento;
+    private javax.swing.JPanel txtFechaNacimiento;
+    private javax.swing.JFormattedTextField txtIdentidad;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }
