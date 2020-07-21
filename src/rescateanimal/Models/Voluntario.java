@@ -3,16 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package rescateanimal.Models;
 
 import java.time.LocalDate;
+
 /**
  *
  * @author chris
  */
 public class Voluntario {
-    private int id;
+
+    private String idUnico;
+    private String id;
     private String nombre;
     private String apellido;
     private LocalDate fechaNacimiento;
@@ -22,7 +24,8 @@ public class Voluntario {
     private String correo;
     private int turno;
 
-    public Voluntario(int id, String nombre, String apellido, LocalDate fechaNacimiento, String numTelefono, LocalDate fechaInicio, LocalDate fechaFinal, String correo, int turno) {
+    public Voluntario(String idUnico, String id, String nombre, String apellido, LocalDate fechaNacimiento, String numTelefono, String correo, LocalDate fechaInicio, LocalDate fechaFinal, int turno) {
+        this.idUnico = idUnico;
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -34,11 +37,19 @@ public class Voluntario {
         this.turno = turno;
     }
 
-    public int getId() {
+    public String getIdUnico() {
+        return idUnico;
+    }
+
+    public void setIdUnico(String idUnico) {
+        this.idUnico = idUnico;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -105,7 +116,5 @@ public class Voluntario {
     public void setTurno(int turno) {
         this.turno = turno;
     }
-    
-    
-    
+
 }
