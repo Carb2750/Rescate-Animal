@@ -1,3 +1,5 @@
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -5,6 +7,7 @@
  */
 package rescateanimal.Controllers;
 
+import java.sql.Array;
 import com.mysql.jdbc.Connection;
 import java.sql.CallableStatement;
 import java.sql.DriverManager;
@@ -12,6 +15,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
+import rescateanimal.Models.Proveedor;
 import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -59,6 +64,52 @@ public class Conexion {
         return estado;
     }
     
+    public ArrayList<Proveedor> getProveedores() {
+        String estado = "";
+
+        ArrayList<Proveedor> prov = new ArrayList<>();
+
+        try {
+            this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
+            this.stm = con.createStatement();
+            this.rss = stm.executeQuery("SELECT * FROM proveedor");
+            while (rss.next()) {
+                String Id = rss.getString("id_proveedor");
+                String Nombre = rss.getString("nombre_proveedor");
+                String Apellido = rss.getString("apellido_proveedor");
+                String Telefono = rss.getString("numero_tel_proveedor");
+                String Correo = rss.getString("correo_elec_proveedor");
+                String NomEmpresa = rss.getString("nombre_empresa");
+                String Direccion = rss.getString("direccion");
+                String Rtn = rss.getString("rtn");
+
+                prov.add(new Proveedor(Id, Nombre, Apellido, Telefono, Correo, NomEmpresa, Direccion, Rtn));
+                estado = "Correcto";
+            }
+        } catch (SQLException e) {
+            estado = "Error de conexion: " + e;
+        }
+
+        return prov;
+    }
+    
+    public void insertProveedor(Proveedor pro) {
+        try {
+            this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
+            this.callableStatement = this.con.prepareCall("{call AgregarProveedor(?, ?, ?, ?, ?, ?, ?)}");
+
+            this.callableStatement.setString(1, pro.getNombre());
+            this.callableStatement.setString(2, pro.getApellido());
+            this.callableStatement.setString(3, pro.getTelefono());
+            this.callableStatement.setString(4, pro.getCorreo());
+            this.callableStatement.setString(5, pro.getEmpresa());
+            this.callableStatement.setString(6, pro.getDireccion());
+            this.callableStatement.setString(7, pro.getRtn());
+            } catch (SQLException e) {
+                System.err.println(e);
+                }
+      }
+
     int cont=0;
     public ArrayList<Usuario> getUsuario() 
     {
@@ -173,21 +224,45 @@ public class Conexion {
             this.callableStatement.setDate(8, Date.valueOf(voluntario.getFechaFinal()));
             this.callableStatement.setInt(9, voluntario.getTurno());
             this.callableStatement.setInt(10, voluntario.getEstado());
+
             this.callableStatement.execute();
 
         } catch (SQLException e) {
             System.err.println(e);
         }
     }
-
-    public ArrayList<Voluntario> getVoluntarios(String idEstado) {
+    
+    public ArrayList<Proveedor> getFiltroProveedor(String filtro, String condicion) {
         String estado = "";
 
-        ArrayList<Voluntario> voluntarios = new ArrayList<>();
+        ArrayList<Proveedor> prove = new ArrayList<>();
 
         try {
             this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
             this.stm = con.createStatement();
+            this.rss = stm.executeQuery("SELECT * FROM proveedor where " + filtro + " = '" + condicion + "'");
+            while (rss.next()) {
+                String Id = rss.getString("id_proveedor");
+                String Nombre = rss.getString("nombre_proveedor");
+                String Apellido = rss.getString("apellido_proveedor");
+                String Telefono = rss.getString("numero_tel_proveedor");
+                String Correo = rss.getString("correo_elec_proveedor");
+                String NomEmpresa = rss.getString("nombre_empresa");
+                String Direccion = rss.getString("direccion");
+                String Rtn = rss.getString("rtn");
+
+                prove.add(new Proveedor(Id, Nombre, Apellido, Telefono, Correo, NomEmpresa, Direccion, Rtn));
+            } catch (SQLException e) {
+            estado = "Error de conexion: " + e;
+          }
+        return prove;
+    }
+              
+      public ArrayList<Voluntario> getVoluntarios(String idEstado) {
+        String estado = "";
+
+        ArrayList<Voluntario> voluntarios = new ArrayList<>();
+        try {
             this.rss = stm.executeQuery("SELECT * FROM voluntarios where id_estado = " + idEstado);
             while (rss.next()) {
                 String ID_UNICO = rss.getString("id_voluntario");
@@ -208,8 +283,25 @@ public class Conexion {
         } catch (SQLException e) {
             estado = "Error de conexion: " + e;
         }
-
         return voluntarios;
+    }
+
+    public void UpdateProveedor(Proveedor pro) {
+        try {
+            this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
+            this.callableStatement = this.con.prepareCall("{call UpdateProveedor(?, ?, ?, ?, ?, ?, ?, ?)}");
+
+            this.callableStatement.setString(1, pro.getId());
+            this.callableStatement.setString(2, pro.getNombre());
+            this.callableStatement.setString(3, pro.getApellido());
+            this.callableStatement.setString(4, pro.getTelefono());
+            this.callableStatement.setString(5, pro.getCorreo());
+            this.callableStatement.setString(6, pro.getEmpresa());
+            this.callableStatement.setString(7, pro.getDireccion());
+            this.callableStatement.setString(8, pro.getRtn());
+        } catch (SQLException e) {
+            estado = "Error de conexion: " + e;
+        }
     }
 
     public ArrayList<Voluntario> getFiltroVoluntario(String filtro, String condicion) {
