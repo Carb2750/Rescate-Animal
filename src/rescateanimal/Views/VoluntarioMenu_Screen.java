@@ -38,6 +38,7 @@ public class VoluntarioMenu_Screen extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         lbTitle = new javax.swing.JLabel();
         btnAddVoluntario = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -73,6 +74,25 @@ public class VoluntarioMenu_Screen extends javax.swing.JFrame {
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rescateanimal/Images/person-outline.png"))); // NOI18N
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
+
+        jButton2.setBackground(new java.awt.Color(33, 67, 122));
+        jButton2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rescateanimal/Images/arrow-back-circle-outline.png"))); // NOI18N
+        jButton2.setText("Salir");
+        jButton2.setBorder(null);
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.setFocusPainted(false);
+        jButton2.setIconTextGap(8);
+        jButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jButton2.setRequestFocusEnabled(false);
+        jButton2.setVerifyInputWhenFocusTarget(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 430, 100, 40));
 
         lbTitle.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         lbTitle.setForeground(new java.awt.Color(48, 97, 176));
@@ -196,6 +216,10 @@ public class VoluntarioMenu_Screen extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_btnSearchVoluntarioActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -235,6 +259,7 @@ public class VoluntarioMenu_Screen extends javax.swing.JFrame {
     private javax.swing.JButton btnAddVoluntario;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnSearchVoluntario;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;

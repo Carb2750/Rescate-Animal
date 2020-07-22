@@ -9,9 +9,11 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JTextField;
 import rescateanimal.Controllers.Conexion;
 import rescateanimal.Models.Voluntario;
-import rescateanimal.Utils.Cache.VoluntarioCache;
+import rescateanimal.Utils.Cache.Cache;
+import rescateanimal.Utils.Validaciones;
 
 /**
  *
@@ -30,6 +32,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
     int turno;
     String selected;
     private String estados[];
+    Validaciones val = new Validaciones();
 
     public ModificarVoluntario_Screen() {
         initComponents();
@@ -51,34 +54,40 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         datePicker3 = new DatePicker(dateSettings3);
         txtFechaFinal.add(datePicker3);
 
-        this.voluntario = VoluntarioCache.getVoluntario();
+        this.voluntario = Cache.getVoluntario();
 
         this.txtIdentidad.setText(this.voluntario.getId());;
         this.txtNombre.setText(this.voluntario.getNombre());
         this.txtApellido.setText(this.voluntario.getApellido());
         this.txtCorreo.setText(this.voluntario.getCorreo());
         this.txtTelefono.setText(this.voluntario.getNumTelefono());
-        this.datePicker.setDate(VoluntarioCache.getVoluntario().getFechaNacimiento());
-        this.datePicker2.setDate(VoluntarioCache.getVoluntario().getFechaInicio());
-        this.datePicker3.setDate(VoluntarioCache.getVoluntario().getFechaFinal());
+        this.datePicker.setDate(Cache.getVoluntario().getFechaNacimiento());
+        this.datePicker2.setDate(Cache.getVoluntario().getFechaInicio());
+        this.datePicker3.setDate(Cache.getVoluntario().getFechaFinal());
 
-        this.turno = VoluntarioCache.getVoluntario().getTurno();
+        this.turno = Cache.getVoluntario().getTurno();
         rbDiurno.setActionCommand("diurno");
         rbNocturno.setActionCommand("nocturno");
-        
-        if(VoluntarioCache.getVoluntario().getTurno() == 1) {
+
+        if (Cache.getVoluntario().getTurno() == 1) {
             rbDiurno.setSelected(true);
-        }
-        else {
+        } else {
             rbNocturno.setSelected(true);
         }
-        
-        this.estados = new String[] {
-          "Activo", "Inactivo"  
+
+        this.estados = new String[]{
+            "Activo", "Inactivo"
         };
-        
+
         comboBoxEstado.setModel(new DefaultComboBoxModel<String>(this.estados));
-        this.comboBoxEstado.setSelectedIndex(VoluntarioCache.getVoluntario().getEstado() - 1);
+        this.comboBoxEstado.setSelectedIndex(Cache.getVoluntario().getEstado() - 1);
+
+        this.lbError.setVisible(false);
+
+        this.txtNombre.setTransferHandler(null);
+        this.txtApellido.setTransferHandler(null);
+        this.txtCorreo.setTransferHandler(null);
+        this.txtTelefono.setTransferHandler(null);
     }
 
     private void group() {
@@ -86,7 +95,6 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
 
         if (selected == "diurno") {
             this.turno = 1;
-            System.out.println(selected);
         } else {
             this.turno = 2;
         }
@@ -110,6 +118,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         lbTitle = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
@@ -135,6 +144,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         btnRegresar = new javax.swing.JButton();
         comboBoxEstado = new javax.swing.JComboBox<>();
         jLabel13 = new javax.swing.JLabel();
+        lbError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1036, 550));
@@ -163,6 +173,25 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rescateanimal/Images/person-outline.png"))); // NOI18N
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
 
+        jButton2.setBackground(new java.awt.Color(33, 67, 122));
+        jButton2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rescateanimal/Images/arrow-back-circle-outline.png"))); // NOI18N
+        jButton2.setText("Salir");
+        jButton2.setBorder(null);
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.setFocusPainted(false);
+        jButton2.setIconTextGap(8);
+        jButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jButton2.setRequestFocusEnabled(false);
+        jButton2.setVerifyInputWhenFocusTarget(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 430, 100, 40));
+
         lbTitle.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         lbTitle.setForeground(new java.awt.Color(48, 97, 176));
         lbTitle.setText("Modificar Datos de Voluntario");
@@ -171,9 +200,21 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(51, 51, 51));
         jLabel1.setText("Nombre");
 
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
+
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Apellido");
+
+        txtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreKeyTyped(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(51, 51, 51));
@@ -206,6 +247,11 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         txtTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTelefonoActionPerformed(evt);
+            }
+        });
+        txtTelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTelefonoKeyTyped(evt);
             }
         });
 
@@ -295,6 +341,9 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         jLabel13.setForeground(new java.awt.Color(51, 51, 51));
         jLabel13.setText("Estado");
 
+        lbError.setForeground(new java.awt.Color(153, 0, 0));
+        lbError.setText("Hay campos vacíos");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -308,22 +357,10 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                         .addGap(65, 65, 65)
                         .addComponent(lbTitle))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(87, 87, 87)
                                 .addComponent(jLabel2))
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel6)
-                                        .addComponent(jLabel5)
-                                        .addComponent(jLabel13))
-                                    .addGap(12, 12, 12)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtCorreo)
-                                        .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(79, 79, 79)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -331,7 +368,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                                     .addComponent(jLabel1))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtNombre)
+                                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtIdentidad, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(120, 120, 120)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
@@ -345,7 +382,22 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(btnGuardar)
                                 .addGap(18, 18, 18)
-                                .addComponent(btnCancelar)))))
+                                .addComponent(btnCancelar))))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel13))
+                            .addGap(12, 12, 12)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtCorreo)
+                                    .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lbError)
+                                    .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -402,10 +454,11 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel13))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
-                    .addComponent(btnCancelar))
+                    .addComponent(btnCancelar)
+                    .addComponent(lbError, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(33, 33, 33))
         );
 
@@ -447,18 +500,48 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        System.out.println("Cache: " + VoluntarioCache.getVoluntario().getTurno());
-        Voluntario voluntario = new Voluntario(VoluntarioCache.getVoluntario().getIdUnico(), VoluntarioCache.getVoluntario().getId(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, comboBoxEstado.getSelectedIndex() + 1);
-        this.con.updateVoluntario(voluntario);
-        BusquedaVoluntario_Screen busquedaVoluntarioScreen = new BusquedaVoluntario_Screen();
-        busquedaVoluntarioScreen.setVisible(true);
-        this.setVisible(false);
+        if (this.datePicker.getDate() != null && this.datePicker2.getDate() != null && this.datePicker3.getDate() != null && !this.txtNombre.getText().isEmpty() && !this.txtApellido.getText().isEmpty() && !this.txtCorreo.getText().isEmpty() && !this.txtTelefono.getText().isEmpty() && this.turno != -1) {
+            String correo = this.txtCorreo.getText();
+            if (this.val.validarEmail(correo)) {
+                Voluntario voluntario = new Voluntario(Cache.getVoluntario().getIdUnico(), Cache.getVoluntario().getId(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, comboBoxEstado.getSelectedIndex() + 1);
+                this.con.updateVoluntario(voluntario);
+                BusquedaVoluntario_Screen busquedaVoluntarioScreen = new BusquedaVoluntario_Screen();
+                busquedaVoluntarioScreen.setVisible(true);
+                this.setVisible(false);
+            } else {
+                this.lbError.setText("El correo es érroneo");
+                this.lbError.setVisible(true);
+            }
+        } else {
+            this.lbError.setText("Hay campos vacíos");
+            this.lbError.setVisible(true);
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void rbDiurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbDiurnoActionPerformed
         // TODO add your handling code here:
         this.group();
     }//GEN-LAST:event_rbDiurnoActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+        // TODO add your handling code here:
+        Object source = evt.getSource();
+        JTextField txtField = (JTextField) source;
+        if (!this.val.validarLetras(Character.toString(evt.getKeyChar())) || !this.val.validarMaximo(Double.valueOf(txtField.getText().length()), 49)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtNombreKeyTyped
+
+    private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
+        // TODO add your handling code here:
+        if (!this.val.validarNumeros(Character.toString(evt.getKeyChar())) || !this.val.validarMaximo(Double.valueOf(this.txtTelefono.getText().length()), 8)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtTelefonoKeyTyped
 
     /**
      * @param args the command line arguments
@@ -502,6 +585,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
     private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> comboBoxEstado;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -518,6 +602,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel lbError;
     private javax.swing.JLabel lbTitle;
     private javax.swing.JRadioButton rbDiurno;
     private javax.swing.JRadioButton rbNocturno;

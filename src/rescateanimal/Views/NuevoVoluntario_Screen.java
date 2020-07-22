@@ -7,7 +7,20 @@ package rescateanimal.Views;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
 import rescateanimal.Controllers.Conexion;
 import rescateanimal.Models.Voluntario;
 import rescateanimal.Utils.Validaciones;
@@ -26,7 +39,7 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
     DatePicker datePicker2;
     DatePicker datePicker3;
     private String selected;
-    private int turno;
+    private int turno = -1;
     Validaciones val = new Validaciones();
 
     public NuevoVoluntario_Screen() {
@@ -34,26 +47,57 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
 
         this.con.conector();
 
-//        jPanel2.setVisible(false);
+        URL dateImageURL = NuevoVoluntario_Screen.class.getResource("../Images/calendar-outline.png");
+        Image dateExampleImage = Toolkit.getDefaultToolkit().getImage(dateImageURL);
+        ImageIcon dateIcon = new ImageIcon(dateExampleImage);
+
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setAllowKeyboardEditing(false);
         datePicker = new DatePicker(dateSettings);
+        dateSettings.setDateRangeLimits(LocalDate.ofYearDay(1955, 1), LocalDate.ofYearDay(2008, 1));
+        dateSettings.setDefaultYearMonth(YearMonth.of(1995, Month.JANUARY));
+        JButton datePickerButton = datePicker.getComponentToggleCalendarButton();
+        datePickerButton.setText("");
+        datePickerButton.setIcon(dateIcon);
+        datePickerButton.setBorderPainted(false);
+        datePickerButton.setBackground(new Color(241, 242, 240));
+        datePickerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         txtFechaNacimiento.add(datePicker);
 
         DatePickerSettings dateSettings2 = new DatePickerSettings();
         dateSettings2.setAllowKeyboardEditing(false);
         datePicker2 = new DatePicker(dateSettings2);
+        dateSettings2.setDateRangeLimits(LocalDate.now(), LocalDate.MAX);
+        datePicker2.setDate(LocalDate.now());
+        JButton datePickerButton2 = datePicker2.getComponentToggleCalendarButton();
+        datePickerButton2.setText("");
+        datePickerButton2.setIcon(dateIcon);
+        datePickerButton2.setBorderPainted(false);
+        datePickerButton2.setBackground(new Color(241, 242, 240));
+        datePickerButton2.setCursor(new Cursor(Cursor.HAND_CURSOR));
         txtFechaInicio.add(datePicker2);
 
         DatePickerSettings dateSettings3 = new DatePickerSettings();
         dateSettings3.setAllowKeyboardEditing(false);
         datePicker3 = new DatePicker(dateSettings3);
+        dateSettings3.setDateRangeLimits(LocalDate.now(), LocalDate.MAX);
+        JButton datePickerButton3 = datePicker3.getComponentToggleCalendarButton();
+        datePickerButton3.setText("");
+        datePickerButton3.setIcon(dateIcon);
+        datePickerButton3.setBorderPainted(false);
+        datePickerButton3.setBackground(new Color(241, 242, 240));
+        datePickerButton3.setCursor(new Cursor(Cursor.HAND_CURSOR));
         txtFechaFinal.add(datePicker3);
 
         rbDiurno.setActionCommand("diurno");
         rbNocturno.setActionCommand("nocturno");
 
         this.lbError.setVisible(false);
+        
+        this.txtNombre.setTransferHandler(null);
+        this.txtApellido.setTransferHandler(null);
+        this.txtCorreo.setTransferHandler(null);
+        this.txtTelefono.setTransferHandler(null);
     }
 
     private void group() {
@@ -61,7 +105,6 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
 
         if (selected == "diurno") {
             turno = 1;
-            System.out.println(selected);
         } else {
             turno = 2;
         }
@@ -85,6 +128,7 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         lbTitle = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
@@ -113,6 +157,8 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1036, 550));
         setMinimumSize(new java.awt.Dimension(1036, 550));
+        setPreferredSize(new java.awt.Dimension(1036, 550));
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(241, 242, 240));
 
@@ -136,6 +182,25 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rescateanimal/Images/person-outline.png"))); // NOI18N
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
+
+        jButton2.setBackground(new java.awt.Color(33, 67, 122));
+        jButton2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rescateanimal/Images/arrow-back-circle-outline.png"))); // NOI18N
+        jButton2.setText("Salir");
+        jButton2.setBorder(null);
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.setFocusPainted(false);
+        jButton2.setIconTextGap(8);
+        jButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jButton2.setRequestFocusEnabled(false);
+        jButton2.setVerifyInputWhenFocusTarget(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 430, 100, 40));
 
         lbTitle.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         lbTitle.setForeground(new java.awt.Color(48, 97, 176));
@@ -183,6 +248,14 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
         txtIndentidad.setMaximumSize(new java.awt.Dimension(0, 0));
         txtIndentidad.setMinimumSize(new java.awt.Dimension(0, 0));
         txtIndentidad.setPreferredSize(new java.awt.Dimension(0, 0));
+        txtIndentidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtIndentidadKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtIndentidadKeyTyped(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(51, 51, 51));
@@ -209,6 +282,7 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(51, 51, 51));
         jLabel11.setText("Fecha Final Voluntariado:");
 
+        txtFechaFinal.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         txtFechaFinal.setLayout(new javax.swing.BoxLayout(txtFechaFinal, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Turno"));
@@ -280,7 +354,7 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
         });
 
         lbError.setForeground(new java.awt.Color(153, 0, 0));
-        lbError.setText("Ya existe un voluntario con esa identidad. Verifque e intente de nuevo.");
+        lbError.setText("Ya existe un voluntario con esa identidad. Verifique e intente de nuevo.");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -342,7 +416,7 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -420,10 +494,7 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-//        LocalDate tiempo = this.datePicker.getDate();
-//        System.out.println(tiempo);
-//        System.out.println("BD: " + this.con.getFiltroVoluntario("id_voluntario", this.txtIndentidad.getText()).isEmpty());
-        if (this.con.getFiltroVoluntario("identidad_voluntario", this.txtIndentidad.getText()).isEmpty()) {
+        if (this.datePicker.getDate() != null && this.datePicker2.getDate() != null && this.datePicker3.getDate() != null && !this.txtNombre.getText().isEmpty() && !this.txtApellido.getText().isEmpty() && !this.txtCorreo.getText().isEmpty() && !this.txtIndentidad.getText().isEmpty() && !this.txtTelefono.getText().isEmpty() && this.turno != -1) {
             String correo = this.txtCorreo.getText();
             if (this.val.validarEmail(correo)) {
                 Voluntario voluntario = new Voluntario("", this.txtIndentidad.getText(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, 1);
@@ -431,12 +502,12 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
                 VoluntarioMenu_Screen voluntarioMenuScreen = new VoluntarioMenu_Screen();
                 voluntarioMenuScreen.setVisible(true);
                 this.setVisible(false);
-            }
-            else {
+            } else {
                 this.lbError.setText("El correo es érroneo");
                 this.lbError.setVisible(true);
             }
         } else {
+            this.lbError.setText("Hay campos vacíos");
             this.lbError.setVisible(true);
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
@@ -467,18 +538,64 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
 
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
         // TODO add your handling code here:
-//        System.out.println("Type: " + evt.getKeyChar());
-        if (!this.val.validarLetras(Character.toString(evt.getKeyChar()))) {
+        Object source = evt.getSource();
+        JTextField txtField = (JTextField) source;
+        if (!this.val.validarLetras(Character.toString(evt.getKeyChar())) || !this.val.validarMaximo(Double.valueOf(txtField.getText().length()), 49)) {
             evt.consume();
         }
     }//GEN-LAST:event_txtNombreKeyTyped
 
     private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
         // TODO add your handling code here:
-        if (!this.val.validarNumeros(Character.toString(evt.getKeyChar()))) {
+        if (!this.val.validarNumeros(Character.toString(evt.getKeyChar())) || !this.val.validarMaximo(Double.valueOf(this.txtTelefono.getText().length()), 8)) {
             evt.consume();
         }
     }//GEN-LAST:event_txtTelefonoKeyTyped
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtIndentidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIndentidadKeyTyped
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txtIndentidadKeyTyped
+
+    private void txtIndentidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIndentidadKeyReleased
+        // TODO add your handling code here:
+        ArrayList<Voluntario> voluntarioNuevo = this.con.getFiltroVoluntario("identidad_voluntario", this.txtIndentidad.getText());
+        if (!voluntarioNuevo.isEmpty()) {
+            Boolean isActive = false;
+            for (int i = 0; i < voluntarioNuevo.size(); i++) {
+                if (voluntarioNuevo.get(i).getEstado() == 1) {
+                    isActive = true;
+                    break;
+                }
+            }
+            int llenar = -1;
+            if (!isActive) {
+                llenar = JOptionPane.showConfirmDialog(null, "¿El voluntario ya existe pero está desactivado, desea activarlo?", "Voluntario ya existente", JOptionPane.YES_NO_OPTION);
+            } else {
+                JOptionPane.showMessageDialog(null, "El voluntario ya está activado, no puede volver a ingresarlo", "Voluntario ya activo", JOptionPane.OK_OPTION, null);
+            }
+            if (llenar == 0) {
+                int lengthVoluntario = voluntarioNuevo.size();
+                this.txtNombre.setText(voluntarioNuevo.get(lengthVoluntario - 1).getNombre());
+                this.txtApellido.setText(voluntarioNuevo.get(lengthVoluntario - 1).getApellido());
+                this.txtCorreo.setText(voluntarioNuevo.get(lengthVoluntario - 1).getCorreo());
+                this.txtTelefono.setText(voluntarioNuevo.get(lengthVoluntario - 1).getNumTelefono());
+                this.datePicker.setDate(voluntarioNuevo.get(lengthVoluntario - 1).getFechaNacimiento());
+                this.turno = voluntarioNuevo.get(lengthVoluntario - 1).getTurno();
+                if (this.turno == 1) {
+                    this.rbDiurno.setSelected(true);
+                } else {
+                    this.rbNocturno.setSelected(true);
+                }
+            } else {
+                this.txtIndentidad.setText("");
+            }
+        }
+    }//GEN-LAST:event_txtIndentidadKeyReleased
 
     /**
      * @param args the command line arguments
@@ -520,6 +637,7 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelar;
     private javax.swing.ButtonGroup btnGroupTurno;
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

@@ -14,7 +14,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import rescateanimal.Controllers.Conexion;
 import rescateanimal.Models.Voluntario;
-import rescateanimal.Utils.Cache.VoluntarioCache;
+import rescateanimal.Utils.Cache.Cache;
 
 /**
  *
@@ -47,6 +47,8 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         this.rbActivo.setActionCommand("activo");
         this.rbInactivo.setActionCommand("inactivo");
         this.rbActivo.setSelected(true);
+        
+        this.txtBuscarFiltro.setTransferHandler(null);
     }
 
     private void estadoGroup() {
@@ -56,7 +58,6 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
             this.idEstado = "1";
             this.txtBuscarFiltro.setText("");
             this.getVoluntarios(this.idEstado);
-            System.out.println(selected);
         } else {
             this.txtBuscarFiltro.setText("");
             this.idEstado = "2";
@@ -103,6 +104,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
         lbTitle = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         comboBoxFiltro = new javax.swing.JComboBox<>();
@@ -118,6 +120,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1036, 550));
         setMinimumSize(new java.awt.Dimension(1036, 550));
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(241, 242, 240));
 
@@ -144,6 +147,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tableVoluntarios);
         if (tableVoluntarios.getColumnModel().getColumnCount() > 0) {
+            tableVoluntarios.getColumnModel().getColumn(0).setPreferredWidth(20);
             tableVoluntarios.getColumnModel().getColumn(1).setPreferredWidth(120);
         }
 
@@ -167,6 +171,25 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
 
         jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rescateanimal/Images/person-outline.png"))); // NOI18N
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
+
+        jButton2.setBackground(new java.awt.Color(33, 67, 122));
+        jButton2.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/rescateanimal/Images/arrow-back-circle-outline.png"))); // NOI18N
+        jButton2.setText("Salir");
+        jButton2.setBorder(null);
+        jButton2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton2.setFocusPainted(false);
+        jButton2.setIconTextGap(8);
+        jButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        jButton2.setRequestFocusEnabled(false);
+        jButton2.setVerifyInputWhenFocusTarget(false);
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 430, 100, 40));
 
         lbTitle.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         lbTitle.setForeground(new java.awt.Color(48, 97, 176));
@@ -342,7 +365,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
             tableModel = (DefaultTableModel) tableVoluntarios.getModel();
             this.voluntarios = this.con.getVoluntarios("1");
             for (int i = 0; i < voluntarios.size(); i++) {
-                tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), voluntarios.get(i).getId(), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), voluntarios.get(i).getId()});
+                tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), voluntarios.get(i).getId(), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), Voluntario.getNamedTurno(voluntarios.get(i).getTurno())});
             }
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -353,10 +376,9 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         LocalDate fechaNacimiento = LocalDate.parse(this.tableVoluntarios.getValueAt(selectedRow, 4).toString());
         LocalDate fechaInicio = LocalDate.parse(this.tableVoluntarios.getValueAt(selectedRow, 7).toString());
         LocalDate fechaFinal = LocalDate.parse(this.tableVoluntarios.getValueAt(selectedRow, 8).toString());
-        System.out.println("String: " + Voluntario.getIdTurno(tableVoluntarios.getValueAt(selectedRow, 9).toString()));
         int idTurno = Voluntario.getIdTurno(tableVoluntarios.getValueAt(selectedRow, 9).toString());
         Voluntario voluntario = new Voluntario(tableVoluntarios.getValueAt(selectedRow, 0).toString(), tableVoluntarios.getValueAt(selectedRow, 1).toString(), tableVoluntarios.getValueAt(selectedRow, 2).toString(), tableVoluntarios.getValueAt(selectedRow, 3).toString(), fechaNacimiento, tableVoluntarios.getValueAt(selectedRow, 5).toString(), tableVoluntarios.getValueAt(selectedRow, 6).toString(), fechaInicio, fechaFinal, idTurno, Integer.parseInt(this.idEstado));
-        VoluntarioCache.setVoluntario(voluntario);
+        Cache.setVoluntario(voluntario);
     }//GEN-LAST:event_tableVoluntariosMouseClicked
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -375,7 +397,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         tableModel = (DefaultTableModel) tableVoluntarios.getModel();
         this.voluntarios = this.con.getVoluntarios(this.idEstado);
         for (int i = 0; i < voluntarios.size(); i++) {
-            tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), voluntarios.get(i).getId(), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), voluntarios.get(i).getId()});
+            tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), voluntarios.get(i).getId(), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), Voluntario.getNamedTurno(voluntarios.get(i).getTurno())});
         }
     }//GEN-LAST:event_btnVerTodoActionPerformed
 
@@ -383,6 +405,10 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.estadoGroup();
     }//GEN-LAST:event_rbActivoActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -426,6 +452,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
     private javax.swing.JButton btnRegresar;
     private javax.swing.JButton btnVerTodo;
     private javax.swing.JComboBox<String> comboBoxFiltro;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel7;
