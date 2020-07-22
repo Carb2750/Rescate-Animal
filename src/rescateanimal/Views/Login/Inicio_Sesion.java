@@ -153,20 +153,14 @@ public class Inicio_Sesion extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setIcon(new javax.swing.ImageIcon("D:\\Universidad\\POO\\Parcial 3\\Rescate_Annimal\\user_icon-icons.com_66546.png")); // NOI18N
-
         lbl_error_usuario.setForeground(new java.awt.Color(153, 0, 0));
         lbl_error_usuario.setText("Ingrese Usuario");
 
         lbl_error_contra.setForeground(new java.awt.Color(153, 0, 0));
         lbl_error_contra.setText("Ingrese contraseña");
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\ELIETH COLINDRES\\Downloads\\image.png")); // NOI18N
-
         lbl_ambos_erroes.setForeground(new java.awt.Color(153, 0, 0));
         lbl_ambos_erroes.setText("Error en el usuario o contraseña");
-
-        jLabel5.setIcon(new javax.swing.ImageIcon("C:\\Users\\ELIETH COLINDRES\\Downloads\\Gender_Neutral_User_icon-icons.com_55902.png")); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

@@ -6,7 +6,7 @@
 package rescateanimal;
 
 import rescateanimal.Views.Login.Inicio_Sesion;
-import rescateanimal.Views.Login.Inicio_Sesion;
+import rescateanimal.Views.MenuPrincipal;
 
 
 /**
@@ -20,8 +20,11 @@ public class RescateAnimal {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-         Inicio_Sesion in=new Inicio_Sesion();
+        Inicio_Sesion in=new Inicio_Sesion();
       in.setVisible(true);
+
+//        MenuPrincipal menu = new MenuPrincipal();
+//        menu.setVisible(true);
     }
     
 }

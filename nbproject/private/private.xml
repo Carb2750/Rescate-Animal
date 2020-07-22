@@ -6,12 +6,10 @@
             <file>file:/C:/Users/chris/Desktop/b/RescateAnimal/src/rescateanimal/Utils/Validaciones.java</file>
             <file>file:/C:/Users/chris/Desktop/b/RescateAnimal/src/rescateanimal/RescateAnimal.java</file>
             <file>file:/C:/Users/chris/Desktop/b/RescateAnimal/src/rescateanimal/Utils/Cache/Cache.java</file>
-            <file>file:/C:/Users/chris/Desktop/b/RescateAnimal/src/rescateanimal/Views/Voluntarios/NuevoVoluntario_Screen.java</file>
-            <file>file:/C:/Users/chris/Desktop/b/RescateAnimal/src/rescateanimal/Views/Voluntarios/VoluntarioMenu_Screen.java</file>
+            <file>file:/C:/Users/chris/Desktop/b/RescateAnimal/src/rescateanimal/Controllers/ConexionLogin.java</file>
             <file>file:/C:/Users/chris/Desktop/b/RescateAnimal/src/rescateanimal/Models/Voluntario.java</file>
-            <file>file:/C:/Users/chris/Desktop/b/RescateAnimal/src/rescateanimal/Views/Voluntarios/ModificarVoluntario_Screen.java</file>
-            <file>file:/C:/Users/chris/Desktop/b/RescateAnimal/src/rescateanimal/Views/Voluntarios/BusquedaVoluntario_Screen.java</file>
-            <file>file:/C:/Users/chris/Desktop/b/RescateAnimal/src/rescateanimal/Controllers/ConexionVoluntario.java</file>
+            <file>file:/C:/Users/chris/Desktop/b/RescateAnimal/src/rescateanimal/Views/Login/Inicio_Sesion.java</file>
+            <file>file:/C:/Users/chris/Desktop/b/RescateAnimal/src/rescateanimal/Views/MenuPrincipal.java</file>
         </group>
     </open-files>
 </project-private>
