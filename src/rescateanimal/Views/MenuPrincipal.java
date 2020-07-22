@@ -1,5 +1,5 @@
 
-package rescateanimal;
+package rescateanimal.Views;
 
 
 public class MenuPrincipal extends javax.swing.JFrame {
