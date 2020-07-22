@@ -12,7 +12,7 @@ import rescateanimal.Models.Voluntario;
  *
  * @author chris
  */
-public class VoluntarioCache {
+public class Cache {
 
     private static Voluntario voluntario;
 
@@ -21,8 +21,6 @@ public class VoluntarioCache {
     }
 
     public static void setVoluntario(Voluntario voluntario) {
-        VoluntarioCache.voluntario = voluntario;
+        Cache.voluntario = voluntario;
     }
-    
-    
 }

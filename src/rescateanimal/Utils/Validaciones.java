@@ -27,7 +27,21 @@ public class Validaciones {
 
     public Boolean validarEmail(String email) {
         String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
-        if(email.matches(regex)) {
+        if (email.matches(regex)) {
+            return true;
+        }
+        return false;
+    }
+    
+    public Boolean validarMaximo(Double num, int rangoMax) {
+        if(num <= rangoMax) {
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean validarRango(Double num, int rangoMin, int rangoMax) {
+        if (num >= rangoMin && num <= rangoMax) {
             return true;
         }
         return false;
