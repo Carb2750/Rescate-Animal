@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import rescateanimal.Controllers.CORREO_ELECTRONICO;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionLogin;
 import rescateanimal.Validar;
 
 /**
@@ -38,7 +38,7 @@ public class Inicio_Sesion extends javax.swing.JFrame {
        
          
         
-        Conexion con=new Conexion();
+        ConexionLogin con=new ConexionLogin();
                 
         System.out.println(con.conector());
          InputMap map2 = this.txtUsuario.getInputMap(JTextField.WHEN_FOCUSED);
@@ -263,7 +263,7 @@ public class Inicio_Sesion extends javax.swing.JFrame {
 
         Boolean ver,min=true;
         Validar val=new Validar();
-        Conexion co=new Conexion();
+        ConexionLogin co=new ConexionLogin();
         
         ver=co.validlog(this.txtUsuario.getText(), this.txtpassword.getText());
          val.evitarPegar(txtUsuario);

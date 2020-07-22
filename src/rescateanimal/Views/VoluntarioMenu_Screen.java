@@ -6,7 +6,7 @@
 package rescateanimal.Views;
 
 import java.util.ArrayList;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionLogin;
 import rescateanimal.Models.Voluntario;
 
 /**

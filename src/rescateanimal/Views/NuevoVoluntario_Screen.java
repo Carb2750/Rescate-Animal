@@ -8,7 +8,7 @@ package rescateanimal.Views;
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.time.LocalDate;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionLogin;
 import rescateanimal.Models.Voluntario;
 import rescateanimal.Utils.Validaciones;
 
@@ -21,7 +21,7 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
     /**
      * Creates new form NuevoVoluntario_Screen
      */
-    Conexion con = new Conexion();
+    ConexionLogin con = new ConexionLogin();
     DatePicker datePicker;
     DatePicker datePicker2;
     DatePicker datePicker3;

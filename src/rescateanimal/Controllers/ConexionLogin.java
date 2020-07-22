@@ -29,7 +29,7 @@ import rescateanimal.Models.Voluntario;
  * @author chris
  * git 
  */
-public class Conexion {
+public class ConexionLogin {
 
     private static Connection con;
     private static Statement stm;
@@ -39,10 +39,9 @@ public class Conexion {
 
     private static final String driver = "com.mysql.jdbc.Driver";
     private static final String user = "root";
-    private static final String pass = "";
+    private static final String pass = "cearacely00";
     private static final String url = "jdbc:mysql://localhost:3306/refugio";
-    private CallableStatement callableStatement;
-
+   
     public String conector() {
         String estado="";
         con=null;

@@ -15,7 +15,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import rescateanimal.Validar;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionLogin;
 import rescateanimal.Models.Usuario;
 
 /**
@@ -24,7 +24,7 @@ import rescateanimal.Models.Usuario;
  */
 public class CORREO_ELECTRONICO {
     //private String password;
-    Conexion con1=new Conexion();
+    ConexionLogin con1=new ConexionLogin();
     
 	private Session session;
         private final Properties props1 = new Properties();

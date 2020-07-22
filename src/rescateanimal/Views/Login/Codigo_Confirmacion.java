@@ -12,7 +12,7 @@ import javax.swing.InputMap;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import rescateanimal.Controllers.CORREO_ELECTRONICO;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionLogin;
 import rescateanimal.Models.codigo_recuperacion;
 import rescateanimal.Validar;
 
@@ -223,7 +223,7 @@ public class Codigo_Confirmacion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_digito4KeyTyped
 ArrayList<codigo_recuperacion> codigo_recuperacion;
-  Conexion con = new Conexion();
+  ConexionLogin con = new ConexionLogin();
     private void btn_confirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmarActionPerformed
         // TODO add your handling code here:
         int cont=0;
@@ -234,7 +234,7 @@ ArrayList<codigo_recuperacion> codigo_recuperacion;
         val.evitarPegar(digito4);
        String respuesta;
        Boolean veri=false;
-        Conexion con=new Conexion();
+        ConexionLogin con=new ConexionLogin();
         con.buscarCodigo();
         respuesta=this.txt_digito1.getText()+this.txt_digito2.getText()+this.txt_digito3.getText()+this.digito4.getText();
                     this.codigo_recuperacion = this.con.buscarCodigo();

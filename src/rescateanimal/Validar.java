@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 import javax.swing.InputMap;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionLogin;
 import rescateanimal.Models.codigo_recuperacion;
 
 /**
@@ -96,7 +96,7 @@ public class Validar {
        }
         
         ArrayList<codigo_recuperacion> codigo_recuperacion; 
-         Conexion con = new Conexion();
+         ConexionLogin con = new ConexionLogin();
       public Boolean Existe_codigo(String generado){
          
             Boolean Veri=false;

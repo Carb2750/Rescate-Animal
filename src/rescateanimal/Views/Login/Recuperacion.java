@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import rescateanimal.Controllers.CORREO_ELECTRONICO;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionLogin;
 import rescateanimal.Models.Usuario;
 import rescateanimal.Validar;
 
@@ -172,7 +172,7 @@ public class Recuperacion extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    Conexion con = new Conexion();
+    ConexionLogin con = new ConexionLogin();
     ArrayList<Usuario> Usuario;
   
     

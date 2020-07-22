@@ -9,7 +9,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultComboBoxModel;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionLogin;
 import rescateanimal.Models.Voluntario;
 import rescateanimal.Utils.Cache.VoluntarioCache;
 
@@ -22,7 +22,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
     /**
      * Creates new form ModificarVoluntario
      */
-    Conexion con = new Conexion();
+    ConexionLogin con = new ConexionLogin();
     Voluntario voluntario;
     DatePicker datePicker;
     DatePicker datePicker2;
