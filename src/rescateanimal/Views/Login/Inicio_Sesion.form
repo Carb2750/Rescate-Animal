@@ -241,7 +241,7 @@
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="D:\Universidad\POO\Parcial 3\Rescate_Annimal\user_icon-icons.com_66546.png"/>
+              <Image iconType="3" name="/rescateanimal/Images/user_icon-icons.com_66546.png"/>
             </Property>
           </Properties>
         </Component>
@@ -264,7 +264,7 @@
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\ELIETH COLINDRES\Downloads\image.png"/>
+              <Image iconType="3" name="/rescateanimal/Images/image.png"/>
             </Property>
           </Properties>
         </Component>
@@ -279,7 +279,7 @@
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\ELIETH COLINDRES\Downloads\Gender_Neutral_User_icon-icons.com_55902.png"/>
+              <Image iconType="3" name="/rescateanimal/Images/Gender_Neutral_User_icon-icons.com_55902.png"/>
             </Property>
           </Properties>
         </Component>
