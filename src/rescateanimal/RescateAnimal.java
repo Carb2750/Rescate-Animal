@@ -5,7 +5,9 @@
  */
 package rescateanimal;
 
-import rescateanimal.Views.Voluntarios.VoluntarioMenu_Screen;
+import rescateanimal.Views.Login.Inicio_Sesion;
+import rescateanimal.Views.Login.Inicio_Sesion;
+
 
 /**
  *
@@ -18,8 +20,8 @@ public class RescateAnimal {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        VoluntarioMenu_Screen voluntarioScreen = new VoluntarioMenu_Screen();
-        voluntarioScreen.setVisible(true);
+         Inicio_Sesion in=new Inicio_Sesion();
+      in.setVisible(true);
     }
     
 }
