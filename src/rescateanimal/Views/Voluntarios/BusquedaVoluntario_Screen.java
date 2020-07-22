@@ -72,7 +72,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         tableModel.setRowCount(0);
         this.voluntarios = this.con.getVoluntarios(idEstado);
         for (int i = 0; i < this.voluntarios.size(); i++) {
-            tableModel.addRow(new Object[]{this.voluntarios.get(i).getIdUnico(), this.voluntarios.get(i).getId(), this.voluntarios.get(i).getNombre(), this.voluntarios.get(i).getApellido(), this.voluntarios.get(i).getFechaNacimiento(), this.voluntarios.get(i).getNumTelefono(), this.voluntarios.get(i).getCorreo(), this.voluntarios.get(i).getFechaInicio(), this.voluntarios.get(i).getFechaFinal(), this.voluntarios.get(i).getNamedTurno(this.voluntarios.get(i).getTurno())});
+            tableModel.addRow(new Object[]{this.voluntarios.get(i).getIdUnico(), Voluntario.getParseId(this.voluntarios.get(i).getId()), this.voluntarios.get(i).getNombre(), this.voluntarios.get(i).getApellido(), this.voluntarios.get(i).getFechaNacimiento(), this.voluntarios.get(i).getNumTelefono(), this.voluntarios.get(i).getCorreo(), this.voluntarios.get(i).getFechaInicio(), this.voluntarios.get(i).getFechaFinal(), this.voluntarios.get(i).getNamedTurno(this.voluntarios.get(i).getTurno())});
         }
     }
 
@@ -118,6 +118,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1036, 550));
         setMinimumSize(new java.awt.Dimension(1036, 550));
         setResizable(false);
 
@@ -359,12 +360,13 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         if (!this.txtBuscarFiltro.getText().isEmpty()) {
-            ArrayList<Voluntario> voluntarios = this.con.getFiltroVoluntario(this.nombresColumnas[this.comboBoxFiltro.getSelectedIndex()], this.txtBuscarFiltro.getText());
+            String busqueda = (this.txtBuscarFiltro.getText().contains("-")) ? Voluntario.fromParseId(this.txtBuscarFiltro.getText()) : this.txtBuscarFiltro.getText();
+            ArrayList<Voluntario> voluntarios = this.con.getFiltroVoluntario(this.nombresColumnas[this.comboBoxFiltro.getSelectedIndex()], busqueda);
             this.tableModel.setRowCount(0);
             tableModel = (DefaultTableModel) tableVoluntarios.getModel();
             this.voluntarios = this.con.getVoluntarios("1");
             for (int i = 0; i < voluntarios.size(); i++) {
-                tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), voluntarios.get(i).getId(), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), Voluntario.getNamedTurno(voluntarios.get(i).getTurno())});
+                tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), Voluntario.getParseId(voluntarios.get(i).getId()), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), Voluntario.getNamedTurno(voluntarios.get(i).getTurno())});
             }
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -396,7 +398,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         tableModel = (DefaultTableModel) tableVoluntarios.getModel();
         this.voluntarios = this.con.getVoluntarios(this.idEstado);
         for (int i = 0; i < voluntarios.size(); i++) {
-            tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), voluntarios.get(i).getId(), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), Voluntario.getNamedTurno(voluntarios.get(i).getTurno())});
+            tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), Voluntario.getParseId(voluntarios.get(i).getId()), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), Voluntario.getNamedTurno(voluntarios.get(i).getTurno())});
         }
     }//GEN-LAST:event_btnVerTodoActionPerformed
 

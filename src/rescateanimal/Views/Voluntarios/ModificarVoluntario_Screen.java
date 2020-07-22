@@ -147,8 +147,10 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         lbError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMaximumSize(new java.awt.Dimension(1036, 550));
         setMinimumSize(new java.awt.Dimension(1036, 550));
         setResizable(false);
+        setSize(new java.awt.Dimension(0, 0));
 
         jPanel1.setBackground(new java.awt.Color(241, 242, 240));
 
@@ -353,10 +355,6 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(65, 65, 65)
-                        .addComponent(lbTitle))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(87, 87, 87)
@@ -397,7 +395,11 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
                                     .addComponent(txtFechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lbError)
-                                    .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                    .addComponent(comboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49)
+                        .addComponent(lbTitle)))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -501,16 +503,21 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
         if (this.datePicker.getDate() != null && this.datePicker2.getDate() != null && this.datePicker3.getDate() != null && !this.txtNombre.getText().isEmpty() && !this.txtApellido.getText().isEmpty() && !this.txtCorreo.getText().isEmpty() && !this.txtTelefono.getText().isEmpty() && this.turno != -1) {
-            String correo = this.txtCorreo.getText();
-            if (this.val.validarEmail(correo)) {
-                Voluntario voluntario = new Voluntario(Cache.getVoluntario().getIdUnico(), Cache.getVoluntario().getId(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, comboBoxEstado.getSelectedIndex() + 1);
-                this.con.updateVoluntario(voluntario);
-                BusquedaVoluntario_Screen busquedaVoluntarioScreen = new BusquedaVoluntario_Screen();
-                busquedaVoluntarioScreen.setVisible(true);
-                this.setVisible(false);
+            if (this.txtTelefono.getText().length() == 8) {
+                String correo = this.txtCorreo.getText();
+                if (this.val.validarEmail(correo)) {
+                    Voluntario voluntario = new Voluntario(Cache.getVoluntario().getIdUnico(), Cache.getVoluntario().getId(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, comboBoxEstado.getSelectedIndex() + 1);
+                    this.con.updateVoluntario(voluntario);
+                    BusquedaVoluntario_Screen busquedaVoluntarioScreen = new BusquedaVoluntario_Screen();
+                    busquedaVoluntarioScreen.setVisible(true);
+                    this.setVisible(false);
+                } else {
+                    this.lbError.setText("El correo es érroneo");
+                    this.lbError.setVisible(true);
+                }
             } else {
-                this.lbError.setText("El correo es érroneo");
-                this.lbError.setVisible(true);
+                this.lbError.setText("El telefono es erróneo");
+                this.setVisible(true);
             }
         } else {
             this.lbError.setText("Hay campos vacíos");
@@ -523,10 +530,6 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
         this.group();
     }//GEN-LAST:event_rbDiurnoActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
         // TODO add your handling code here:
         Object source = evt.getSource();
@@ -538,10 +541,14 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
 
     private void txtTelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTelefonoKeyTyped
         // TODO add your handling code here:
-        if (!this.val.validarNumeros(Character.toString(evt.getKeyChar())) || !this.val.validarMaximo(Double.valueOf(this.txtTelefono.getText().length()), 8)) {
+        if (!this.val.validarNumeros(Character.toString(evt.getKeyChar())) || this.txtTelefono.getText().length() > 7) {
             evt.consume();
         }
     }//GEN-LAST:event_txtTelefonoKeyTyped
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
