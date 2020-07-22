@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rescateanimal.Views;
+package rescateanimal.Views.Voluntarios;
 
 import java.util.ArrayList;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionVoluntario;
 import rescateanimal.Models.Voluntario;
 
 /**
@@ -47,7 +47,6 @@ public class VoluntarioMenu_Screen extends javax.swing.JFrame {
         btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1036, 550));
         setMinimumSize(new java.awt.Dimension(1036, 550));
         setName("Rescate Animal"); // NOI18N
         setResizable(false);

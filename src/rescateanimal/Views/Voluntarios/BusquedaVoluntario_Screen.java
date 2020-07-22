@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rescateanimal.Views;
+package rescateanimal.Views.Voluntarios;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +12,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionVoluntario;
 import rescateanimal.Models.Voluntario;
 import rescateanimal.Utils.Cache.Cache;
 
@@ -26,7 +26,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
      * Creates new form BusquedaVoluntario_Screen
      */
     DefaultTableModel tableModel;
-    Conexion con;
+    ConexionVoluntario con;
     ArrayList<Voluntario> voluntarios;
     String[] nombresColumnas;
     int selectedRow;
@@ -39,7 +39,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         this.nombresColumnas = new String[]{"id_voluntario", "identidad_voluntario", "nombre_voluntario", "apellido_voluntario", "fecha_nacimiento", "num_tel", "fecha_inicio", "fecha_final", "correo_electronico", "id_tipo_turno"};
         this.selectedRow = -1;
 
-        this.con = new Conexion();
+        this.con = new ConexionVoluntario();
         this.idEstado = "1";
         this.getVoluntarios(this.idEstado);
         this.fillComboBox();
@@ -71,8 +71,9 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         tableModel = (DefaultTableModel) tableVoluntarios.getModel();
         tableModel.setRowCount(0);
         this.voluntarios = this.con.getVoluntarios(idEstado);
+//        this.voluntarios = this.con.getLastFiltroVoluntario("id_estado", idEstado);
         for (int i = 0; i < this.voluntarios.size(); i++) {
-            tableModel.addRow(new Object[]{this.voluntarios.get(i).getIdUnico(), this.voluntarios.get(i).getId(), this.voluntarios.get(i).getNombre(), this.voluntarios.get(i).getApellido(), this.voluntarios.get(i).getFechaNacimiento(), this.voluntarios.get(i).getNumTelefono(), this.voluntarios.get(i).getCorreo(), this.voluntarios.get(i).getFechaInicio(), this.voluntarios.get(i).getFechaFinal(), this.voluntarios.get(i).getNamedTurno(this.voluntarios.get(i).getTurno())});
+            tableModel.addRow(new Object[]{this.voluntarios.get(i).getIdUnico(), Voluntario.getParseId(this.voluntarios.get(i).getId()), this.voluntarios.get(i).getNombre(), this.voluntarios.get(i).getApellido(), this.voluntarios.get(i).getFechaNacimiento(), this.voluntarios.get(i).getNumTelefono(), this.voluntarios.get(i).getCorreo(), this.voluntarios.get(i).getFechaInicio(), this.voluntarios.get(i).getFechaFinal(), this.voluntarios.get(i).getNamedTurno(this.voluntarios.get(i).getTurno())});
         }
     }
 
@@ -221,7 +222,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         });
 
         btnGroupEstado.add(rbActivo);
-        rbActivo.setText("Activo");
+        rbActivo.setText("En voluntariado");
         rbActivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbActivoActionPerformed(evt);
@@ -231,7 +232,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         jLabel1.setText("Estado:");
 
         btnGroupEstado.add(rbInactivo);
-        rbInactivo.setText("Inactivo");
+        rbInactivo.setText("Finalizado");
         rbInactivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbActivoActionPerformed(evt);
@@ -360,12 +361,13 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         if (!this.txtBuscarFiltro.getText().isEmpty()) {
-            ArrayList<Voluntario> voluntarios = this.con.getFiltroVoluntario(this.nombresColumnas[this.comboBoxFiltro.getSelectedIndex()], this.txtBuscarFiltro.getText());
+            String busqueda = (this.txtBuscarFiltro.getText().contains("-")) ? Voluntario.fromParseId(this.txtBuscarFiltro.getText()) : this.txtBuscarFiltro.getText();
+            ArrayList<Voluntario> voluntarios = this.con.getFiltroVoluntario(this.nombresColumnas[this.comboBoxFiltro.getSelectedIndex()], busqueda);
             this.tableModel.setRowCount(0);
             tableModel = (DefaultTableModel) tableVoluntarios.getModel();
             this.voluntarios = this.con.getVoluntarios("1");
             for (int i = 0; i < voluntarios.size(); i++) {
-                tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), voluntarios.get(i).getId(), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), Voluntario.getNamedTurno(voluntarios.get(i).getTurno())});
+                tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), Voluntario.getParseId(voluntarios.get(i).getId()), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), Voluntario.getNamedTurno(voluntarios.get(i).getTurno())});
             }
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -397,7 +399,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         tableModel = (DefaultTableModel) tableVoluntarios.getModel();
         this.voluntarios = this.con.getVoluntarios(this.idEstado);
         for (int i = 0; i < voluntarios.size(); i++) {
-            tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), voluntarios.get(i).getId(), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), Voluntario.getNamedTurno(voluntarios.get(i).getTurno())});
+            tableModel.addRow(new Object[]{voluntarios.get(i).getIdUnico(), Voluntario.getParseId(voluntarios.get(i).getId()), voluntarios.get(i).getNombre(), voluntarios.get(i).getApellido(), voluntarios.get(i).getFechaNacimiento(), voluntarios.get(i).getNumTelefono(), voluntarios.get(i).getCorreo(), voluntarios.get(i).getFechaInicio(), voluntarios.get(i).getFechaFinal(), Voluntario.getNamedTurno(voluntarios.get(i).getTurno())});
         }
     }//GEN-LAST:event_btnVerTodoActionPerformed
 

@@ -23,6 +23,4 @@ public class Cache {
     public static void setVoluntario(Voluntario voluntario) {
         Cache.voluntario = voluntario;
     }
-    
-    
 }

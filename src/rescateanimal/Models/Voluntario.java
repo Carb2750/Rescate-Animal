@@ -54,93 +54,60 @@ public class Voluntario {
         }
         return 2;
     }
+    
+    public static String getParseId(String id) {
+        String parsedId;
+        parsedId = id.substring(0, 4) + "-" + id.substring(4, 8) + "-" + id.substring(8, 13);
+        return parsedId;
+    }
+    
+    public static String fromParseId(String parsedId) {
+        String id;
+        id = parsedId.replaceAll("-", "");
+        return id;
+    }
 
     public String getIdUnico() {
         return idUnico;
-    }
-
-    public void setIdUnico(String idUnico) {
-        this.idUnico = idUnico;
     }
 
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getNombre() {
         return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getApellido() {
         return apellido;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
     }
 
     public String getNumTelefono() {
         return numTelefono;
     }
 
-    public void setNumTelefono(String numTelefono) {
-        this.numTelefono = numTelefono;
-    }
-
     public LocalDate getFechaInicio() {
         return fechaInicio;
-    }
-
-    public void setFechaInicio(LocalDate fechaInicio) {
-        this.fechaInicio = fechaInicio;
     }
 
     public LocalDate getFechaFinal() {
         return fechaFinal;
     }
 
-    public void setFechaFinal(LocalDate fechaFinal) {
-        this.fechaFinal = fechaFinal;
-    }
-
     public String getCorreo() {
         return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
     }
 
     public int getTurno() {
         return turno;
     }
 
-    public void setTurno(int turno) {
-        this.turno = turno;
-    }
-
     public int getEstado() {
         return estado;
     }
-
-    public void setEstado(int estado) {
-        this.estado = estado;
-    }
-
 }

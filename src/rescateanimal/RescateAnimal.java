@@ -5,6 +5,8 @@
  */
 package rescateanimal;
 
+import rescateanimal.Views.Voluntarios.VoluntarioMenu_Screen;
+
 /**
  *
  * @author chris
@@ -16,6 +18,8 @@ public class RescateAnimal {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        VoluntarioMenu_Screen voluntarioScreen = new VoluntarioMenu_Screen();
+        voluntarioScreen.setVisible(true);
     }
     
 }
