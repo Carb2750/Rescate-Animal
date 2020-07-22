@@ -3,16 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vistas;
+package rescateanimal.Views;
 
-import Modelos.Proveedor;
-import rescateanimal.Controller.Conexion;
+import rescateanimal.Models.Proveedor;
+import rescateanimal.Controllers.Conexion;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
-import Modelos.ProveedorCache;
-import Vistas.ModificarProveedor;
+import rescateanimal.Utils.Cache.ProveedorCache;
 
 /**
  *
@@ -259,9 +258,9 @@ public class Proveedores extends javax.swing.JFrame {
                                     .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(txtApellido)
                                     .addComponent(txtRtn, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(76, 76, 76)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(76, 76, 76)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel7)
                                     .addComponent(jLabel6)
@@ -271,9 +270,7 @@ public class Proveedores extends javax.swing.JFrame {
                                     .addComponent(txtEmpresa)
                                     .addComponent(txtCorreo)
                                     .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(BtnAgregarPro)))
+                            .addComponent(BtnAgregarPro))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()

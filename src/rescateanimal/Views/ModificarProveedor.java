@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vistas;
-import Vistas.Proveedores;
-import rescateanimal.Controller.Conexion;
-import Modelos.ProveedorCache;
-import Modelos.Proveedor;
+package rescateanimal.Views;
+import rescateanimal.Views.Proveedores;
+import rescateanimal.Controllers.Conexion;
+import rescateanimal.Utils.Cache.ProveedorCache;
+import rescateanimal.Models.Proveedor;
 
 /**
  *

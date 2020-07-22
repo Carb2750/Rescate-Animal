@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Modelos;
+package rescateanimal.Utils.Cache;
 
-import Modelos.Proveedor;
+import rescateanimal.Models.Proveedor;
 
 /**
  *
