@@ -417,7 +417,7 @@
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="btnGroupEstado"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Activo"/>
+                <Property name="text" type="java.lang.String" value="En voluntariado"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbActivoActionPerformed"/>
@@ -433,7 +433,7 @@
                 <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                   <ComponentRef name="btnGroupEstado"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Inactivo"/>
+                <Property name="text" type="java.lang.String" value="Finalizado"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rbActivoActionPerformed"/>

@@ -11,11 +11,13 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import javafx.scene.input.KeyCode;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -41,6 +43,9 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
     private String selected;
     private int turno = -1;
     Validaciones val = new Validaciones();
+    private Boolean isInsert = true;
+    ArrayList<Voluntario> voluntarioNuevo;
+    int llenar;
 
     public NuevoVoluntario_Screen() {
         initComponents();
@@ -157,7 +162,6 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMaximumSize(new java.awt.Dimension(1036, 550));
         setMinimumSize(new java.awt.Dimension(1036, 550));
-        setPreferredSize(new java.awt.Dimension(1036, 550));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(241, 242, 240));
@@ -488,8 +492,14 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
                 if (this.txtTelefono.getText().length() == 8) {
                     String correo = this.txtCorreo.getText();
                     if (this.val.validarEmail(correo)) {
-                        Voluntario voluntario = new Voluntario("", this.txtIdentidad.getText(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, 1);
-                        this.con.addVoluntario(voluntario);
+                        if (this.isInsert) {
+                            Voluntario voluntario = new Voluntario("", this.txtIdentidad.getText(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, 1);
+                            this.con.addVoluntario(voluntario);
+                        } else {
+                            int lengthVoluntario = voluntarioNuevo.size();
+                            Voluntario voluntario = new Voluntario(this.voluntarioNuevo.get(lengthVoluntario - 1).getIdUnico(), this.txtIdentidad.getText(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, 1);
+                            this.con.updateVoluntario(voluntario);
+                        }
                         VoluntarioMenu_Screen voluntarioMenuScreen = new VoluntarioMenu_Screen();
                         voluntarioMenuScreen.setVisible(true);
                         this.setVisible(false);
@@ -558,7 +568,9 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
     private void txtIdentidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtIdentidadKeyReleased
         // TODO add your handling code here:
         if (this.txtIdentidad.getText().length() == 13) {
-            ArrayList<Voluntario> voluntarioNuevo = this.con.getFiltroVoluntario("identidad_voluntario", this.txtIdentidad.getText());
+            this.isInsert = true;
+//            ArrayList<Voluntario> voluntarioNuevo = this.con.getFiltroVoluntario("identidad_voluntario", this.txtIdentidad.getText());
+            voluntarioNuevo = this.con.getFiltroVoluntario("identidad_voluntario", this.txtIdentidad.getText());
             if (!voluntarioNuevo.isEmpty()) {
                 Boolean isActive = false;
                 for (int i = 0; i < voluntarioNuevo.size(); i++) {
@@ -567,11 +579,11 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
                         break;
                     }
                 }
-                int llenar = -1;
+                llenar = -1;
                 if (!isActive) {
-                    llenar = JOptionPane.showConfirmDialog(null, "¿El voluntario ya existe pero está desactivado, desea activarlo?", "Voluntario ya existente", JOptionPane.YES_NO_OPTION);
+                    llenar = JOptionPane.showConfirmDialog(null, "¿El voluntario ya existe pero ya finalizó su voluntariado, desea comenzarle otro voluntariado?", "Voluntario ya existente", JOptionPane.YES_NO_OPTION);
                 } else {
-                    JOptionPane.showMessageDialog(null, "El voluntario ya está activado, no puede volver a ingresarlo", "Voluntario ya activo", JOptionPane.OK_OPTION, null);
+                    JOptionPane.showMessageDialog(null, "El voluntario ya está en voluntariado, no puede volver a ingresarlo", "Voluntario ya en voluntariado", JOptionPane.OK_OPTION, null);
                 }
                 if (llenar == 0) {
                     int lengthVoluntario = voluntarioNuevo.size();
@@ -586,10 +598,24 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
                     } else {
                         this.rbNocturno.setSelected(true);
                     }
+                    this.isInsert = false;
                 } else {
                     this.txtIdentidad.setText("");
                 }
             }
+        }
+
+        if (this.llenar == 0 && evt.getKeyCode() == 8) {
+            this.txtNombre.setText("");
+            this.txtApellido.setText("");
+            this.txtCorreo.setText("");
+            this.txtTelefono.setText("");
+            this.datePicker.setDate(null);
+            this.datePicker2.setDate(LocalDate.now());
+            this.datePicker3.setDate(null);
+            this.turno = -1;
+            this.rbDiurno.setSelected(false);
+            this.rbNocturno.setSelected(false);
         }
     }//GEN-LAST:event_txtIdentidadKeyReleased
 

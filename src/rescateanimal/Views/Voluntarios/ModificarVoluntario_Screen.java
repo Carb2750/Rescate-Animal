@@ -7,8 +7,20 @@ package rescateanimal.Views.Voluntarios;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import rescateanimal.Controllers.ConexionVoluntario;
 import rescateanimal.Models.Voluntario;
@@ -33,72 +45,101 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
     String selected;
     private String estados[];
     Validaciones val = new Validaciones();
-
+    
     public ModificarVoluntario_Screen() {
         initComponents();
-
+        
         this.con.conector();
-
+        
+        URL dateImageURL = NuevoVoluntario_Screen.class.getResource("../../Images/calendar-outline.png");
+        Image dateExampleImage = Toolkit.getDefaultToolkit().getImage(dateImageURL);
+        ImageIcon dateIcon = new ImageIcon(dateExampleImage);
+        
         DatePickerSettings dateSettings = new DatePickerSettings();
         dateSettings.setAllowKeyboardEditing(false);
         datePicker = new DatePicker(dateSettings);
+        dateSettings.setDateRangeLimits(LocalDate.ofYearDay(1955, 1), LocalDate.ofYearDay(2008, 1));
+        dateSettings.setDefaultYearMonth(YearMonth.of(1995, Month.JANUARY));
+        JButton datePickerButton = datePicker.getComponentToggleCalendarButton();
+        datePickerButton.setText("");
+        datePickerButton.setIcon(dateIcon);
+        datePickerButton.setBorderPainted(false);
+        datePickerButton.setBackground(new Color(241, 242, 240));
+        datePickerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         txtFechaNacimiento.add(datePicker);
-
+        
         DatePickerSettings dateSettings2 = new DatePickerSettings();
         dateSettings2.setAllowKeyboardEditing(false);
         datePicker2 = new DatePicker(dateSettings2);
+        dateSettings2.setDateRangeLimits((Cache.getVoluntario().getEstado() == 1) ? Cache.getVoluntario().getFechaInicio() : LocalDate.now(), LocalDate.MAX);
+        JButton datePickerButton2 = datePicker2.getComponentToggleCalendarButton();
+        datePickerButton2.setText("");
+        datePickerButton2.setIcon(dateIcon);
+        datePickerButton2.setBorderPainted(false);
+        datePickerButton2.setBackground(new Color(241, 242, 240));
+        datePickerButton2.setCursor(new Cursor(Cursor.HAND_CURSOR));
         txtFechaInicio.add(datePicker2);
-
+        
         DatePickerSettings dateSettings3 = new DatePickerSettings();
         dateSettings3.setAllowKeyboardEditing(false);
         datePicker3 = new DatePicker(dateSettings3);
+        dateSettings3.setDateRangeLimits(LocalDate.now(), LocalDate.MAX);
+        JButton datePickerButton3 = datePicker3.getComponentToggleCalendarButton();
+        datePickerButton3.setText("");
+        datePickerButton3.setIcon(dateIcon);
+        datePickerButton3.setBorderPainted(false);
+        datePickerButton3.setBackground(new Color(241, 242, 240));
+        datePickerButton3.setCursor(new Cursor(Cursor.HAND_CURSOR));
         txtFechaFinal.add(datePicker3);
-
+        
         this.voluntario = Cache.getVoluntario();
-
+        
         this.txtIdentidad.setText(this.voluntario.getId());;
         this.txtNombre.setText(this.voluntario.getNombre());
         this.txtApellido.setText(this.voluntario.getApellido());
         this.txtCorreo.setText(this.voluntario.getCorreo());
         this.txtTelefono.setText(this.voluntario.getNumTelefono());
         this.datePicker.setDate(Cache.getVoluntario().getFechaNacimiento());
-        this.datePicker2.setDate(Cache.getVoluntario().getFechaInicio());
-        this.datePicker3.setDate(Cache.getVoluntario().getFechaFinal());
-
+//        this.datePicker2.setDate(Cache.getVoluntario().getFechaInicio());
+        this.datePicker2.setDate((this.voluntario.getEstado() == 1) ? this.voluntario.getFechaInicio() : LocalDate.now());
+//        this.datePicker3.setDate(Cache.getVoluntario().getFechaFinal());
+        this.datePicker3.setDate((this.voluntario.getEstado() == 1) ? this.voluntario.getFechaFinal() : null);
+        
         this.turno = Cache.getVoluntario().getTurno();
         rbDiurno.setActionCommand("diurno");
         rbNocturno.setActionCommand("nocturno");
-
+        
         if (Cache.getVoluntario().getTurno() == 1) {
             rbDiurno.setSelected(true);
         } else {
             rbNocturno.setSelected(true);
         }
-
+        
         this.estados = new String[]{
-            "Activo", "Inactivo"
+            "En voluntariado", "Finalizado"
         };
-
+        
         comboBoxEstado.setModel(new DefaultComboBoxModel<String>(this.estados));
-        this.comboBoxEstado.setSelectedIndex(Cache.getVoluntario().getEstado() - 1);
-
+//        this.comboBoxEstado.setSelectedIndex(Cache.getVoluntario().getEstado() - 1);
+        this.comboBoxEstado.setSelectedIndex(0);
+        
         this.lbError.setVisible(false);
-
+        
         this.txtNombre.setTransferHandler(null);
         this.txtApellido.setTransferHandler(null);
         this.txtCorreo.setTransferHandler(null);
         this.txtTelefono.setTransferHandler(null);
     }
-
+    
     private void group() {
         String selected = btnGroupTurno.getSelection().getActionCommand();
-
+        
         if (selected == "diurno") {
             this.turno = 1;
         } else {
             this.turno = 2;
         }
-
+        
         this.selected = selected;
     }
 
@@ -502,26 +543,45 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        if (this.datePicker.getDate() != null && this.datePicker2.getDate() != null && this.datePicker3.getDate() != null && !this.txtNombre.getText().isEmpty() && !this.txtApellido.getText().isEmpty() && !this.txtCorreo.getText().isEmpty() && !this.txtTelefono.getText().isEmpty() && this.turno != -1) {
-            if (this.txtTelefono.getText().length() == 8) {
-                String correo = this.txtCorreo.getText();
-                if (this.val.validarEmail(correo)) {
-                    Voluntario voluntario = new Voluntario(Cache.getVoluntario().getIdUnico(), Cache.getVoluntario().getId(), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, comboBoxEstado.getSelectedIndex() + 1);
-                    this.con.updateVoluntario(voluntario);
-                    BusquedaVoluntario_Screen busquedaVoluntarioScreen = new BusquedaVoluntario_Screen();
-                    busquedaVoluntarioScreen.setVisible(true);
-                    this.setVisible(false);
+        ArrayList<Voluntario> voluntarioNuevo = this.con.getFiltroVoluntario("identidad_voluntario", Voluntario.fromParseId(Cache.getVoluntario().getId()));
+        Boolean isActive = false;
+        if (Cache.getVoluntario().getEstado() != 1) {
+            if (!voluntarioNuevo.isEmpty()) {
+                for (int i = 0; i < voluntarioNuevo.size(); i++) {
+                    if (voluntarioNuevo.get(i).getEstado() == 1) {
+                        isActive = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!voluntarioNuevo.isEmpty()) {
+            if (!isActive) {
+                if (this.datePicker.getDate() != null && this.datePicker2.getDate() != null && this.datePicker3.getDate() != null && !this.txtNombre.getText().isEmpty() && !this.txtApellido.getText().isEmpty() && !this.txtCorreo.getText().isEmpty() && !this.txtTelefono.getText().isEmpty() && this.turno != -1) {
+                    if (this.txtTelefono.getText().length() == 8) {
+                        String correo = this.txtCorreo.getText();
+                        if (this.val.validarEmail(correo)) {
+                            Voluntario voluntario = new Voluntario(Cache.getVoluntario().getIdUnico(), Voluntario.fromParseId(Cache.getVoluntario().getId()), this.txtNombre.getText(), this.txtApellido.getText(), this.datePicker.getDate(), this.txtTelefono.getText(), this.txtCorreo.getText(), this.datePicker2.getDate(), this.datePicker3.getDate(), this.turno, comboBoxEstado.getSelectedIndex() + 1);
+                            this.con.updateVoluntario(voluntario);
+                            BusquedaVoluntario_Screen busquedaVoluntarioScreen = new BusquedaVoluntario_Screen();
+                            busquedaVoluntarioScreen.setVisible(true);
+                            this.setVisible(false);
+                        } else {
+                            this.lbError.setText("El correo es érroneo");
+                            this.lbError.setVisible(true);
+                        }
+                    } else {
+                        this.lbError.setText("El telefono es erróneo");
+                        this.setVisible(true);
+                    }
                 } else {
-                    this.lbError.setText("El correo es érroneo");
+                    this.lbError.setText("Hay campos vacíos");
                     this.lbError.setVisible(true);
                 }
             } else {
-                this.lbError.setText("El telefono es erróneo");
-                this.setVisible(true);
+                JOptionPane.showMessageDialog(null, "El voluntario ya está en voluntariado, no puede volver a ingresarlo", "Voluntario ya en voluntariado", JOptionPane.OK_OPTION, null);
+                isActive = false;
             }
-        } else {
-            this.lbError.setText("Hay campos vacíos");
-            this.lbError.setVisible(true);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 

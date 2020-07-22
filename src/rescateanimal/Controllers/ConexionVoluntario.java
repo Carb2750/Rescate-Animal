@@ -59,7 +59,7 @@ public class ConexionVoluntario {
         try {
             this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
             this.callableStatement = this.con.prepareCall("{call proc_agregarVoluntario(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
-            
+
             this.callableStatement.setString(1, voluntario.getId());
             this.callableStatement.setString(2, voluntario.getNombre());
             this.callableStatement.setString(3, voluntario.getApellido());
@@ -118,6 +118,39 @@ public class ConexionVoluntario {
             this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
             this.stm = con.createStatement();
             this.rss = stm.executeQuery("SELECT * FROM voluntarios where " + filtro + " = '" + condicion + "'");
+            while (rss.next()) {
+                String ID_UNICO = rss.getString("id_voluntario");
+                String ID = rss.getString("identidad_voluntario");
+                String NOMBRE = rss.getString("nombre_voluntario");
+                String APELLIDO = rss.getString("apellido_voluntario");
+                String FECHA_NACIMIENTO = rss.getString("fecha_nacimiento");
+                String NUMERO_TELEFONO = rss.getString("num_tel");
+                String FECHA_INICIO = rss.getString("fecha_inicio");
+                String FECHA_FINAL = rss.getString("fecha_final");
+                String CORREO = rss.getString("correo_electronico");
+                String ID_TURNO = rss.getString("id_tipo_turno");
+                Integer ESTADO = rss.getInt("id_estado");
+
+                voluntarios.add(new Voluntario(ID_UNICO, ID, NOMBRE, APELLIDO, LocalDate.parse(FECHA_NACIMIENTO), NUMERO_TELEFONO, CORREO, LocalDate.parse(FECHA_INICIO), LocalDate.parse(FECHA_FINAL), Integer.parseInt(ID_TURNO), ESTADO));
+                estado = "Correcto";
+            }
+        } catch (SQLException e) {
+            estado = "Error de conexion: " + e;
+        }
+
+        return voluntarios;
+    }
+
+    public ArrayList<Voluntario> getLastFiltroVoluntario(String filtro, String condicion) {
+//        SELECT * FROM voluntarios WHERE identidad_voluntario = 0801200012345 order by id_voluntario desc limit 1
+        String estado = "";
+
+        ArrayList<Voluntario> voluntarios = new ArrayList<>();
+
+        try {
+            this.con = (Connection) DriverManager.getConnection(this.url, this.user, this.pass);
+            this.stm = con.createStatement();
+            this.rss = stm.executeQuery("SELECT * FROM voluntarios where " + filtro + " = '" + condicion + "' order by id_voluntario desc limit 1");
             while (rss.next()) {
                 String ID_UNICO = rss.getString("id_voluntario");
                 String ID = rss.getString("identidad_voluntario");

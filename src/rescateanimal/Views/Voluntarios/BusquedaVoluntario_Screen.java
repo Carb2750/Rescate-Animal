@@ -71,6 +71,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         tableModel = (DefaultTableModel) tableVoluntarios.getModel();
         tableModel.setRowCount(0);
         this.voluntarios = this.con.getVoluntarios(idEstado);
+//        this.voluntarios = this.con.getLastFiltroVoluntario("id_estado", idEstado);
         for (int i = 0; i < this.voluntarios.size(); i++) {
             tableModel.addRow(new Object[]{this.voluntarios.get(i).getIdUnico(), Voluntario.getParseId(this.voluntarios.get(i).getId()), this.voluntarios.get(i).getNombre(), this.voluntarios.get(i).getApellido(), this.voluntarios.get(i).getFechaNacimiento(), this.voluntarios.get(i).getNumTelefono(), this.voluntarios.get(i).getCorreo(), this.voluntarios.get(i).getFechaInicio(), this.voluntarios.get(i).getFechaFinal(), this.voluntarios.get(i).getNamedTurno(this.voluntarios.get(i).getTurno())});
         }
@@ -221,7 +222,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         });
 
         btnGroupEstado.add(rbActivo);
-        rbActivo.setText("Activo");
+        rbActivo.setText("En voluntariado");
         rbActivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbActivoActionPerformed(evt);
@@ -231,7 +232,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         jLabel1.setText("Estado:");
 
         btnGroupEstado.add(rbInactivo);
-        rbInactivo.setText("Inactivo");
+        rbInactivo.setText("Finalizado");
         rbInactivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rbActivoActionPerformed(evt);
