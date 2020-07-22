@@ -27,7 +27,7 @@ import rescateanimal.Models.Voluntario;
  * @author chris
  *
  */
-public class Conexion {
+public class ConexionVoluntario {
 
     private static Connection con;
     private static Statement stm;
