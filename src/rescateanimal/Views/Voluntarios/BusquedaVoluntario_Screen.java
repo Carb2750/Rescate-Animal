@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rescateanimal.Views;
+package rescateanimal.Views.Voluntarios;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +12,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionVoluntario;
 import rescateanimal.Models.Voluntario;
 import rescateanimal.Utils.Cache.Cache;
 
@@ -26,7 +26,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
      * Creates new form BusquedaVoluntario_Screen
      */
     DefaultTableModel tableModel;
-    Conexion con;
+    ConexionVoluntario con;
     ArrayList<Voluntario> voluntarios;
     String[] nombresColumnas;
     int selectedRow;
@@ -39,7 +39,7 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         this.nombresColumnas = new String[]{"id_voluntario", "identidad_voluntario", "nombre_voluntario", "apellido_voluntario", "fecha_nacimiento", "num_tel", "fecha_inicio", "fecha_final", "correo_electronico", "id_tipo_turno"};
         this.selectedRow = -1;
 
-        this.con = new Conexion();
+        this.con = new ConexionVoluntario();
         this.idEstado = "1";
         this.getVoluntarios(this.idEstado);
         this.fillComboBox();
@@ -118,7 +118,6 @@ public class BusquedaVoluntario_Screen extends javax.swing.JFrame {
         btnRegresar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1036, 550));
         setMinimumSize(new java.awt.Dimension(1036, 550));
         setResizable(false);
 

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rescateanimal.Views;
+package rescateanimal.Views.Voluntarios;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
@@ -21,7 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionVoluntario;
 import rescateanimal.Models.Voluntario;
 import rescateanimal.Utils.Validaciones;
 
@@ -34,7 +34,7 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
     /**
      * Creates new form NuevoVoluntario_Screen
      */
-    Conexion con = new Conexion();
+    ConexionVoluntario con = new ConexionVoluntario();
     DatePicker datePicker;
     DatePicker datePicker2;
     DatePicker datePicker3;
@@ -47,7 +47,7 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
 
         this.con.conector();
 
-        URL dateImageURL = NuevoVoluntario_Screen.class.getResource("../Images/calendar-outline.png");
+        URL dateImageURL = NuevoVoluntario_Screen.class.getResource("../../Images/calendar-outline.png");
         Image dateExampleImage = Toolkit.getDefaultToolkit().getImage(dateImageURL);
         ImageIcon dateIcon = new ImageIcon(dateExampleImage);
 
@@ -155,9 +155,7 @@ public class NuevoVoluntario_Screen extends javax.swing.JFrame {
         lbError = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(1036, 550));
         setMinimumSize(new java.awt.Dimension(1036, 550));
-        setPreferredSize(new java.awt.Dimension(1036, 550));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(241, 242, 240));

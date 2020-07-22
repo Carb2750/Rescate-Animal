@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rescateanimal.Views;
+package rescateanimal.Views.Voluntarios;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import java.time.format.DateTimeFormatter;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
-import rescateanimal.Controllers.Conexion;
+import rescateanimal.Controllers.ConexionVoluntario;
 import rescateanimal.Models.Voluntario;
 import rescateanimal.Utils.Cache.Cache;
 import rescateanimal.Utils.Validaciones;
@@ -24,7 +24,7 @@ public class ModificarVoluntario_Screen extends javax.swing.JFrame {
     /**
      * Creates new form ModificarVoluntario
      */
-    Conexion con = new Conexion();
+    ConexionVoluntario con = new ConexionVoluntario();
     Voluntario voluntario;
     DatePicker datePicker;
     DatePicker datePicker2;
